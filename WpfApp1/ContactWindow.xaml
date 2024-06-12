@@ -1,0 +1,34 @@
+﻿<Window x:Class="StudentManagement.ContractWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Contract Window" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Height="244" Width="760">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Mã Hợp Đồng" Binding="{Binding MaHopDong}" Width="Auto" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Mã Sinh Viên" Binding="{Binding MaSinhVien}" Width="Auto"/>
+                <DataGridTextColumn Header="Số Phòng" Binding="{Binding SoPhong}" Width="Auto"/>
+                <DataGridTemplateColumn Header="Ngày Bắt Đầu" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding NgayBatDau, StringFormat=d}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Ngày Kết Thúc" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding NgayKetThuc, StringFormat=d}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Đăng ký hợp đồng" Click="btnRegisterContract_Click" HorizontalAlignment="Left" Width="150" Margin="460,379,0,0" VerticalAlignment="Top" Height="32"/>
+        <Button Content="Sửa hợp đồng" Click="btnEditContract_Click" HorizontalAlignment="Left" Width="150" Margin="620,379,0,0" VerticalAlignment="Top" Height="32"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="Quản lý hợp đồng" VerticalAlignment="Top" FontSize="24"/>
+    </Grid>
+</Window>
