@@ -26,7 +26,7 @@ namespace StudentManagement
                 return;
             }
 
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "UPDATE Phong SET SoPhong = @SoPhong, SucChua = @SucChua, GiaThue = @GiaThue WHERE SoPhong = @SoPhong";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

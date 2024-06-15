@@ -29,7 +29,7 @@ namespace StudentManagement
                 return;
             }
 
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
 
             string query = "UPDATE HopDong SET MaSinhVien = @MaSinhVien, SoPhong = @SoPhong, NgayBatDau = @NgayBatDau, NgayKetThuc = @NgayKetThuc WHERE MaHopDong = @MaHopDong";
 

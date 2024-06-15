@@ -1,0 +1,25 @@
+﻿<Window x:Class="StudentManagement.AddElectricBillWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Electric Bill" Height="389" Width="400">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="Mã Tiền Điện" Margin="0,0,0,5"/>
+            <TextBox x:Name="txtMaTienDien" Width="200" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Mã Hợp Đồng" Margin="0,0,0,5"/>
+            <TextBox x:Name="txtMaHopDong" Width="200" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Số Điện" Margin="0,0,0,5"/>
+            <TextBox x:Name="txtSoDien" Width="200" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Ngày Tính Tiền" Margin="0,0,0,5"/>
+            <DatePicker x:Name="dpNgayTinhTien" Width="200" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Thành Tiền" Margin="0,0,0,5"/>
+            <TextBox x:Name="txtThanhTien" Width="200" Margin="0,0,0,10"/>
+        </StackPanel>
+        <Button Content="Thêm" Click="btnAdd_Click" Margin="45,293,243,44"/>
+        <Button Content="Hủy" Click="btnCancel_Click" Margin="225,293,68,40"/>
+    </Grid>
+</Window>

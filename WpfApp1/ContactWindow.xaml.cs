@@ -21,7 +21,7 @@ namespace StudentManagement
 
         private void LoadContractsFromDatabase()
         {
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT * FROM HopDong";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

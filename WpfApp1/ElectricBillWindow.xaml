@@ -1,0 +1,36 @@
+﻿<Window x:Class="StudentManagement.ElectricBillWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Electric Bill Window" Height="450" Width="800">
+    <Grid>
+        <StackPanel Margin="10">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBox x:Name="txtMaHopDong" Width="100" Margin="0,0,10,0" VerticalAlignment="Center"
+                         Text="Nhập mã hợp đồng" GotFocus="txtMaHopDong_GotFocus"
+                         LostFocus="txtMaHopDong_LostFocus"/>
+                <Button Content="Tìm kiếm" Click="btnSearch_Click" Width="100"/>
+            </StackPanel>
+            <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top" Height="300" Width="760">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Mã Tiền Điện" Binding="{Binding MaTienDien}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Mã Hợp Đồng" Binding="{Binding MaHopDong}" Width="Auto"/>
+                    <DataGridTextColumn Header="Số Điện" Binding="{Binding SoDien}" Width="Auto"/>
+                    <DataGridTemplateColumn Header="Ngày Tính Tiền" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding NgayTinhTien, StringFormat=d}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Thành Tiền" Binding="{Binding ThanhTien}" Width="Auto"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Orientation="Horizontal" Height="31" Width="784">
+                <Button x:Name="btnAdd" Content="Thêm" Click="btnAdd_Click" Width="100" Margin="5"/>
+                <Button x:Name="btnEdit" Content="Sửa" Click="btnEdit_Click" Width="100" Margin="5"/>
+                <Button x:Name="btnDelete" Content="Xóa" Click="btnDelete_Click" Width="100" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+        <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="Quản lý tiền điện" VerticalAlignment="Top" FontSize="24"/>
+    </Grid>
+</Window>

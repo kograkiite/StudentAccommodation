@@ -22,7 +22,7 @@ namespace WpfApp1
 
         private void LoadDataFromDatabase()
         {
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT * FROM SinhVien";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -93,7 +93,7 @@ namespace WpfApp1
 
             if (MessageBox.Show("Bạn có chắc chắn muốn xóa sinh viên đã chọn không?", "Xác nhận", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+                string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
                 string query = "DELETE FROM SinhVien WHERE id = @id";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -137,6 +137,12 @@ namespace WpfApp1
             ContractWindow contractWindow = new ContractWindow();
             contractWindow.Show();
         }
+        private void btnManageElectric_Click(object sender, RoutedEventArgs e)
+        {
+            var electricBillWindow = new ElectricBillWindow();
+            electricBillWindow.Show();
+        }
+
     }
 
     public class SinhVien

@@ -22,7 +22,7 @@ namespace StudentManagement
 
         private void LoadRoomsFromDatabase()
         {
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT * FROM Phong";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -91,7 +91,7 @@ namespace StudentManagement
 
             if (MessageBox.Show("Bạn có chắc chắn muốn xóa phòng đã chọn không?", "Xác nhận", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+                string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
                 string query = "DELETE FROM Phong WHERE SoPhong = @SoPhong";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
