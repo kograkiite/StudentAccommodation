@@ -16,7 +16,7 @@ namespace StudentManagement
         private int GetNewContractId()
         {
             // Kết nối cơ sở dữ liệu
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT IDENT_CURRENT('HopDong')";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -50,7 +50,7 @@ namespace StudentManagement
                 return;
             }
 
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
 
             string query = "INSERT INTO HopDong (MaSinhVien, SoPhong, NgayBatDau, NgayKetThuc) VALUES (@MaSinhVien, @SoPhong, @NgayBatDau, @NgayKetThuc)";
 

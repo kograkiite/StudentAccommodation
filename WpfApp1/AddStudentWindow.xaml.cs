@@ -25,7 +25,7 @@ namespace WpfApp1
                 return;
             }
 
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "INSERT INTO SinhVien (id, fullname, phoneNumber, sex, dateOfBirth) VALUES (@id, @fullname, @phoneNumber, @sex, @dateOfBirth)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

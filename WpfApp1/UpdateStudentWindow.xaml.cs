@@ -36,7 +36,7 @@ namespace WpfApp1
                 return;
             }
 
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=LAPTOP-DI-DONG;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "UPDATE SinhVien SET fullname = @fullname, phoneNumber = @phoneNumber, sex = @sex, dateOfBirth = @dateOfBirth WHERE id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
