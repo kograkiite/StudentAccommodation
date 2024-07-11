@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
-using StudentManagement;
 using StudentManagement.Payment;
+using StudentManagement;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -10,13 +10,13 @@ namespace WpfApp1
 {
     public partial class MainWindow : Window
     {
-        public ObservableCollection<SinhVien> SinhVien { get; set; }
+        public ObservableCollection<SinhVien> SinhVienList { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            SinhVien = new ObservableCollection<SinhVien>();
-            BangSinhVien.ItemsSource = SinhVien;
+            SinhVienList = new ObservableCollection<SinhVien>();
+            BangSinhVien.ItemsSource = SinhVienList;
 
             LoadDataFromDatabase();
         }
@@ -24,7 +24,7 @@ namespace WpfApp1
         private void LoadDataFromDatabase()
         {
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "SELECT * FROM SinhVien";
+            string query = "SELECT id, fullname, phoneNumber, sex, dateOfBirth, SoPhong FROM SinhVien";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -39,14 +39,14 @@ namespace WpfApp1
 
                     foreach (DataRow row in dataTable.Rows)
                     {
-                        SinhVien.Add(new SinhVien()
+                        SinhVienList.Add(new SinhVien()
                         {
                             id = row["id"].ToString(),
                             fullname = row["fullname"].ToString(),
                             phoneNumber = row["phoneNumber"].ToString(),
                             sex = row["sex"].ToString(),
                             dateOfBirth = Convert.ToDateTime(row["dateOfBirth"]),
-                            Room = row["Room"].ToString() 
+                            Room = row["SoPhong"].ToString()
                         });
                     }
                 }
@@ -62,7 +62,7 @@ namespace WpfApp1
             var addStudentWindow = new AddStudentWindow();
             if (addStudentWindow.ShowDialog() == true)
             {
-                SinhVien.Add(addStudentWindow.NewStudent);
+                SinhVienList.Add(addStudentWindow.NewStudent);
             }
         }
 
@@ -79,32 +79,11 @@ namespace WpfApp1
             if (updateStudentWindow.ShowDialog() == true)
             {
                 var updatedStudent = updateStudentWindow.UpdatedStudent;
-                var index = SinhVien.IndexOf(selectedStudent);
-                SinhVien[index] = updatedStudent;
+                var index = SinhVienList.IndexOf(selectedStudent);
+                SinhVienList[index] = updatedStudent;
             }
         }
 
-        private void UpdateRoomInfoAfterDelete(string room)
-        {
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string updateRoomQuery = "UPDATE Phong SET SoLuongSinhVienHienTai = SoLuongSinhVienHienTai - 1, TrangThaiPhong = CASE WHEN SoLuongSinhVienHienTai - 1 < SucChua THEN 1 ELSE 0 END WHERE SoPhong = @Room";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = new SqlCommand(updateRoomQuery, connection);
-                command.Parameters.AddWithValue("@Room", room);
-
-                try
-                {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             var selectedStudents = BangSinhVien.SelectedItems;
@@ -136,7 +115,7 @@ namespace WpfApp1
                                 int rowsAffected = deleteCommand.ExecuteNonQuery();
                                 if (rowsAffected > 0)
                                 {
-                                    SinhVien.Remove(student);
+                                    SinhVienList.Remove(student);
                                     MessageBox.Show($"Xóa sinh viên {student.fullname} thành công.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
 
                                     // Cập nhật thông tin phòng sau khi xóa sinh viên
@@ -169,7 +148,6 @@ namespace WpfApp1
             }
         }
 
-
         private void btnManageRoom_Click(object sender, RoutedEventArgs e)
         {
             var roomManagementWindow = new RoomManagement();
@@ -181,6 +159,7 @@ namespace WpfApp1
             ContractWindow contractWindow = new ContractWindow();
             contractWindow.Show();
         }
+
         private void btnManagePayments_Click(object sender, RoutedEventArgs e)
         {
             PaymentWindow paymentWindow = new PaymentWindow();

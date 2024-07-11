@@ -22,7 +22,7 @@ namespace StudentManagement.Payment
         private void LoadPaymentsFromDatabase()
         {
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "SELECT * FROM ThuTien";
+            string query = "SELECT * FROM ThuTien WHERE TrangThai = 1"; // Chỉ lấy các bản ghi có TrangThai là 1
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -39,7 +39,7 @@ namespace StudentManagement.Payment
                     {
                         Payments.Add(new PaymentRecord()
                         {
-                            Id = Convert.ToInt32(row["Id"]),
+                            MaThuTien = Convert.ToInt32(row["MaThuTien"]),
                             MaSinhVien = row["MaSinhVien"].ToString(),
                             TenSinhVien = row["TenSinhVien"].ToString(),
                             SoDienThoai = row["SoDienThoai"].ToString(),
@@ -58,7 +58,7 @@ namespace StudentManagement.Payment
 
     public class PaymentRecord
     {
-        public int Id { get; set; }
+        public int MaThuTien { get; set; }
         public string MaSinhVien { get; set; }
         public string TenSinhVien { get; set; }
         public string SoDienThoai { get; set; }

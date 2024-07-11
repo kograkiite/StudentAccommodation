@@ -52,10 +52,6 @@ namespace StudentManagement
                     MessageBox.Show("Error: " + ex.Message);
                 }
             }
-
-            // No longer needed as cmbMaSV is replaced by txtMaSV
-            // cmbMaSV.ItemsSource = students;
-            // cmbMaSV.DisplayMemberPath = "id"; // Display MaSinhVien by default
         }
 
         private void txtMaSV_TextChanged(object sender, TextChangedEventArgs e)
@@ -162,9 +158,9 @@ namespace StudentManagement
             }
 
             // Query to insert contract and retrieve student info
-            string insertContractQuery = "INSERT INTO HopDong (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, NgayBatDau, NgayKetThuc) " +
-                                         "OUTPUT INSERTED.MaHopDong " + 
-                                         "VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @NgayBatDau, @NgayKetThuc); " +
+            string insertContractQuery = "INSERT INTO HopDong (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, NgayBatDau, NgayKetThuc, TrangThai) " +
+                                         "OUTPUT INSERTED.MaHopDong " +
+                                         "VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @NgayBatDau, @NgayKetThuc, 1); " +
                                          "SELECT fullname AS TenSinhVien, phoneNumber AS SoDienThoai FROM SinhVien WHERE id = @MaSinhVien";
 
             // Query to insert payment record into ThuTien

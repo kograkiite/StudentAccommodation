@@ -7,7 +7,7 @@
         <TextBox x:Name="txtFullname" HorizontalAlignment="Left" Margin="148,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="197" FontSize="16"/>
         <TextBox x:Name="txtPhoneNumber" HorizontalAlignment="Left" Margin="148,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="197" FontSize="16"/>
         <ComboBox x:Name="cbRoom" HorizontalAlignment="Left" Margin="148,161,0,0" VerticalAlignment="Top" Width="197" FontSize="16"/>
-        <Label Content="ID" HorizontalAlignment="Left" Margin="38,53,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="Mã sinh viên" HorizontalAlignment="Left" Margin="38,53,0,0" VerticalAlignment="Top" FontSize="16"/>
         <Label Content="Họ Tên" HorizontalAlignment="Left" Margin="38,85,0,0" VerticalAlignment="Top" FontSize="16"/>
         <Label Content="Số điện thoại" HorizontalAlignment="Left" Margin="38,121,0,0" VerticalAlignment="Top" FontSize="16"/>
         <Label Content="Phòng" HorizontalAlignment="Left" Margin="38,157,0,0" VerticalAlignment="Top" FontSize="16"/>

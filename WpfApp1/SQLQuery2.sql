@@ -2,22 +2,22 @@
 
 use StudentManagement
 
-CREATE TABLE SinhVien (
-    id VARCHAR(50) NOT NULL,
-    fullname NVARCHAR(255) NOT NULL,
-    phoneNumber VARCHAR(20),
-    sex NVARCHAR(3),
-    dateOfBirth DATE,
-	Room NVARCHAR(50),
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE Phong (
     SoPhong VARCHAR(10) PRIMARY KEY,
     SucChua INT NOT NULL,
     GiaThue DECIMAL(18, 2) NOT NULL,
     SoLuongSinhVienHienTai INT NOT NULL DEFAULT 0,
     TrangThaiPhong BIT NOT NULL DEFAULT 1 -- 1: Còn phòng, 0: Hết phòng
+);
+
+CREATE TABLE SinhVien (
+    id VARCHAR(50) NOT NULL PRIMARY KEY,
+    fullname NVARCHAR(255) NOT NULL,
+    phoneNumber VARCHAR(20),
+    sex NVARCHAR(3),
+    dateOfBirth DATE,
+    SoPhong VARCHAR(10) NOT NULL,
+    FOREIGN KEY (SoPhong) REFERENCES Phong(SoPhong)
 );
 
 CREATE TABLE HopDong (
@@ -40,8 +40,10 @@ CREATE TABLE ThuTien (
     SoDienThoai VARCHAR(20),
     SoPhong VARCHAR(10) NOT NULL,
     GiaThue DECIMAL(18, 2) NOT NULL,
-    TrangThai BIT NOT NULL DEFAULT 1, -- Mặc định là 1 (true)
+    TrangThai BIT NOT NULL DEFAULT 1,
+    MaHopDong INT,
     FOREIGN KEY (MaSinhVien) REFERENCES SinhVien(id),
-    FOREIGN KEY (SoPhong) REFERENCES Phong(SoPhong)
+    FOREIGN KEY (SoPhong) REFERENCES Phong(SoPhong),
+    FOREIGN KEY (MaHopDong) REFERENCES HopDong(MaHopDong)
 );
 

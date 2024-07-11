@@ -113,7 +113,7 @@ namespace WpfApp1
 
             // Proceed with updating student information
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "UPDATE SinhVien SET fullname = @fullname, phoneNumber = @phoneNumber, sex = @sex, dateOfBirth = @dateOfBirth, Room = @room WHERE id = @id";
+            string query = "UPDATE SinhVien SET fullname = @fullname, phoneNumber = @phoneNumber, sex = @sex, dateOfBirth = @dateOfBirth, SoPhong = @room WHERE id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -161,7 +161,7 @@ namespace WpfApp1
         {
             string room = string.Empty;
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "SELECT Room FROM SinhVien WHERE id = @id";
+            string query = "SELECT SoPhong FROM SinhVien WHERE id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

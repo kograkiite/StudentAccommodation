@@ -22,7 +22,7 @@ namespace StudentManagement
         private void LoadContractsFromDatabase()
         {
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "SELECT hd.MaHopDong, hd.MaSinhVien, sv.fullname AS TenSinhVien, sv.phoneNumber AS SoDienThoai, hd.SoPhong, hd.NgayBatDau, hd.NgayKetThuc " +
+            string query = "SELECT hd.MaHopDong, hd.MaSinhVien, sv.fullname AS TenSinhVien, sv.phoneNumber AS SoDienThoai, hd.SoPhong, hd.NgayBatDau, hd.NgayKetThuc, hd.TrangThai " +
                            "FROM HopDong hd " +
                            "INNER JOIN SinhVien sv ON hd.MaSinhVien = sv.id";
 
@@ -47,7 +47,8 @@ namespace StudentManagement
                             SoDienThoai = row["SoDienThoai"].ToString(),
                             SoPhong = row["SoPhong"].ToString(),
                             NgayBatDau = Convert.ToDateTime(row["NgayBatDau"]),
-                            NgayKetThuc = Convert.ToDateTime(row["NgayKetThuc"])
+                            NgayKetThuc = Convert.ToDateTime(row["NgayKetThuc"]),
+                            TrangThai = Convert.ToBoolean(row["TrangThai"]) ? "Còn hạn" : "Hết hạn"
                         });
                     }
                 }
@@ -116,5 +117,7 @@ namespace StudentManagement
         public string SoPhong { get; set; }
         public DateTime NgayBatDau { get; set; }
         public DateTime NgayKetThuc { get; set; }
+        public String TrangThai { get; set; }
     }
+
 }

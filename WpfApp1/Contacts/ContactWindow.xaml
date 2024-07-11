@@ -27,6 +27,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Trạng Thái" Binding="{Binding TrangThai}" Width="Auto"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Đăng ký hợp đồng" Click="btnRegisterContract_Click" HorizontalAlignment="Left" Width="150" Margin="460,379,0,0" VerticalAlignment="Top" Height="32"/>

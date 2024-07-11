@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using StudentManagement;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -146,7 +147,7 @@ namespace WpfApp1
             }
 
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "INSERT INTO SinhVien (id, fullname, phoneNumber, sex, dateOfBirth, Room) VALUES (@id, @fullname, @phoneNumber, @sex, @dateOfBirth, @Room)";
+            string query = "INSERT INTO SinhVien (id, fullname, phoneNumber, sex, dateOfBirth, SoPhong) VALUES (@id, @fullname, @phoneNumber, @sex, @dateOfBirth, @Room)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -192,7 +193,6 @@ namespace WpfApp1
                 }
             }
         }
-
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
