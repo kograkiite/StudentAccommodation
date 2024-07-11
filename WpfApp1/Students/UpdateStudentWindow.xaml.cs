@@ -35,7 +35,7 @@ namespace WpfApp1
         {
             Rooms = new ObservableCollection<string>();
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "SELECT SoPhong FROM Phong";
+            string query = "SELECT SoPhong FROM Phong WHERE TrangThaiPhong = 1"; // Chỉ lấy những phòng có TrangThaiPhong = 1
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -70,6 +70,31 @@ namespace WpfApp1
                 cbRoom.SelectedItem == null)
             {
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string studentId = txtId.Text.Trim();
+            string studentName = txtFullname.Text.Trim();
+            string phoneNumber = txtPhoneNumber.Text.Trim();
+
+            // Kiểm tra định dạng Mã Sinh Viên
+            if (!System.Text.RegularExpressions.Regex.IsMatch(studentId, @"^SE[0-9]{6}$"))
+            {
+                MessageBox.Show("Mã sinh viên phải theo định dạng SEXXXXXX với X là số nguyên dương.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Kiểm tra tên không chứa số
+            if (System.Text.RegularExpressions.Regex.IsMatch(studentName, @"\d"))
+            {
+                MessageBox.Show("Tên sinh viên không được chứa số.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Kiểm tra số điện thoại chỉ chứa các số nguyên dương
+            if (!System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^[0-9]+$"))
+            {
+                MessageBox.Show("Số điện thoại chỉ được chứa các số nguyên dương.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
