@@ -53,6 +53,19 @@ namespace StudentManagement
                 return;
             }
 
+            // Validate capacity (Sức Chứa) and rent (Giá Thuê)
+            if (!int.TryParse(txtSucChua.Text.Trim(), out int capacity) || capacity <= 0)
+            {
+                MessageBox.Show("Sức chứa phòng phải là một số nguyên dương.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!decimal.TryParse(txtGiaThue.Text.Trim(), out decimal rent) || rent <= 0)
+            {
+                MessageBox.Show("Giá thuê phòng phải là một số dương.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             NewRoom = new Room
             {
                 SoPhong = txtSoPhong.Text,

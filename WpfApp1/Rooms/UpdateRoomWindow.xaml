@@ -8,17 +8,17 @@
         <StackPanel Margin="20,30,20,10">
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <Label Content="Số phòng:" VerticalAlignment="Center"/>
-                <TextBox Name="txtSoPhong" Text="{Binding SoPhong}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" VerticalAlignment="Center" MinWidth="200"/>
+                <TextBox Name="txtSoPhong" VerticalAlignment="Center" MinWidth="200"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <Label Content="Sức chứa:" VerticalAlignment="Center"/>
-                <TextBox Name="txtSucChua" Text="{Binding SucChua}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" VerticalAlignment="Center" MinWidth="200"/>
+                <TextBox Name="txtSucChua" VerticalAlignment="Center" MinWidth="200"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,10">
                 <Label Content="Giá thuê:" VerticalAlignment="Center"/>
-                <TextBox Name="txtGiaThue" Text="{Binding GiaThue}" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" VerticalAlignment="Center" MinWidth="200"/>
+                <TextBox Name="txtGiaThue" VerticalAlignment="Center" MinWidth="200"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
