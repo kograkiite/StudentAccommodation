@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Data.SqlClient;
 
 namespace StudentManagement.Payment
@@ -22,7 +24,9 @@ namespace StudentManagement.Payment
         private void LoadPaymentsFromDatabase()
         {
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "SELECT * FROM ThuTien WHERE TrangThai = 1"; // Chỉ lấy các bản ghi có TrangThai là 1
+            string query = "SELECT t.MaThuTien, t.MaSinhVien, t.TenSinhVien, t.SoDienThoai, t.SoPhong, t.GiaThue, t.MaHopDong " +
+                           "FROM ThuTien t " +
+                           "WHERE t.TrangThai = 1"; // Only select records with TrangThai = 1
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -44,7 +48,8 @@ namespace StudentManagement.Payment
                             TenSinhVien = row["TenSinhVien"].ToString(),
                             SoDienThoai = row["SoDienThoai"].ToString(),
                             SoPhong = row["SoPhong"].ToString(),
-                            GiaThue = Convert.ToDecimal(row["GiaThue"])
+                            GiaThue = Convert.ToDecimal(row["GiaThue"]),
+                            MaHopDong = Convert.ToInt32(row["MaHopDong"]) // Assign MaHopDong property
                         });
                     }
                 }
@@ -54,6 +59,27 @@ namespace StudentManagement.Payment
                 }
             }
         }
+
+        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = txtSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                dgPayments.ItemsSource = Payments;
+            }
+            else
+            {
+                var filteredList = Payments.Where(p =>
+                    p.MaSinhVien.ToLower().Contains(searchText) ||
+                    p.TenSinhVien.ToLower().Contains(searchText) ||
+                    p.SoDienThoai.ToLower().Contains(searchText)
+                ).ToList();
+
+                dgPayments.ItemsSource = filteredList;
+            }
+        }
+
     }
 
     public class PaymentRecord
@@ -64,5 +90,7 @@ namespace StudentManagement.Payment
         public string SoDienThoai { get; set; }
         public string SoPhong { get; set; }
         public decimal GiaThue { get; set; }
+        public int MaHopDong { get; set; }
     }
+
 }

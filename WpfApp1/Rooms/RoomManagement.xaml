@@ -3,7 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Room Management" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="BangRooms" AutoGenerateColumns="False" VerticalAlignment="Center" Height="304" Margin="10,0,10,0">
+        <!-- Ô tìm kiếm -->
+        <StackPanel Orientation="Horizontal" Margin="438,21,32,354">
+            <Label Content="Tìm kiếm số phòng:" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtSearchRoom" Width="200" Height="35" Margin="5" TextChanged="txtSearchRoom_TextChanged"/>
+        </StackPanel>
+
+        <!-- DataGrid hiển thị danh sách phòng -->
+        <DataGrid x:Name="BangRooms" AutoGenerateColumns="False" VerticalAlignment="Center" Height="304" Margin="10,50,10,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Số Phòng" Binding="{Binding SoPhong}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Sức Chứa" Binding="{Binding SucChua}"/>
@@ -13,11 +20,14 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <!-- Các nút thao tác -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
             <Button x:Name="btnAddRoom" Content="Add Room" Width="96" Click="btnAddRoom_Click" Background="#FF03AB0F" Height="35"/>
             <Button x:Name="btnUpdateRoom" Content="Update Room" Width="104" Margin="10,0,0,0" Click="btnUpdateRoom_Click" Background="#FFFFF400"/>
             <Button x:Name="btnDeleteRoom" Content="Delete Room" Width="105" Margin="10,0,0,0" Click="btnDeleteRoom_Click" Background="#FFFF6700" Height="32"/>
         </StackPanel>
-        <TextBlock HorizontalAlignment="Center" Margin="10,10,10,0" TextWrapping="Wrap" Text="Quản lý phòng" VerticalAlignment="Top" FontSize="24"/>
+
+        <!-- Tiêu đề -->
+        <TextBlock HorizontalAlignment="Left" Margin="223,30,0,0" TextWrapping="Wrap" Text="Quản lý phòng" VerticalAlignment="Top" FontSize="24"/>
     </Grid>
 </Window>

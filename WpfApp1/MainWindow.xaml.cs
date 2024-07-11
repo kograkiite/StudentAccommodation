@@ -4,7 +4,9 @@ using StudentManagement;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace WpfApp1
 {
@@ -164,6 +166,26 @@ namespace WpfApp1
         {
             PaymentWindow paymentWindow = new PaymentWindow();
             paymentWindow.ShowDialog();
+        }
+
+        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = txtSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                BangSinhVien.ItemsSource = SinhVienList;
+            }
+            else
+            {
+                var filteredList = SinhVienList.Where(sv =>
+                    sv.id.ToLower().Contains(searchText) ||
+                    sv.fullname.ToLower().Contains(searchText) ||
+                    sv.phoneNumber.ToLower().Contains(searchText)
+                ).ToList();
+
+                BangSinhVien.ItemsSource = filteredList;
+            }
         }
     }
 

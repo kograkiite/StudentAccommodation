@@ -3,6 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace StudentManagement
 {
@@ -48,7 +49,7 @@ namespace StudentManagement
                             SoPhong = row["SoPhong"].ToString(),
                             NgayBatDau = Convert.ToDateTime(row["NgayBatDau"]),
                             NgayKetThuc = Convert.ToDateTime(row["NgayKetThuc"]),
-                            TrangThai = Convert.ToBoolean(row["TrangThai"]) ? "Còn hạn" : "Hết hạn"
+                            TrangThai = Convert.ToBoolean(row["TrangThai"]), // Convert database BIT to boolean
                         });
                     }
                 }
@@ -58,6 +59,8 @@ namespace StudentManagement
                 }
             }
         }
+
+
 
         private void btnRegisterContract_Click(object sender, RoutedEventArgs e)
         {
@@ -106,6 +109,26 @@ namespace StudentManagement
             }
         }
 
+        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = txtSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                dataGrid.ItemsSource = Contracts;
+            }
+            else
+            {
+                var filteredList = Contracts.Where(c =>
+                    c.MaSinhVien.ToLower().Contains(searchText) ||
+                    c.TenSinhVien.ToLower().Contains(searchText) ||
+                    c.SoDienThoai.ToLower().Contains(searchText)
+                ).ToList();
+
+                dataGrid.ItemsSource = filteredList;
+            }
+        }
+
     }
 
     public class Contract
@@ -117,7 +140,24 @@ namespace StudentManagement
         public string SoPhong { get; set; }
         public DateTime NgayBatDau { get; set; }
         public DateTime NgayKetThuc { get; set; }
-        public String TrangThai { get; set; }
+        private bool trangThai; // Change trangThai to boolean type
+        public bool TrangThai
+        {
+            get => trangThai;
+            set
+            {
+                trangThai = value;
+                TrangThaiDisplay = trangThai ? "Còn hạn" : "Hết hạn";
+            }
+        }
+        public string TrangThaiDisplay { get; private set; }
+        // Constructor to initialize TrangThaiDisplay based on TrangThai
+        public Contract()
+        {
+            TrangThai = true; // Default to "Còn hạn" when a new contract is created
+        }
     }
+
+
 
 }

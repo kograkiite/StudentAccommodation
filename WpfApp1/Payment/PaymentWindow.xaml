@@ -7,23 +7,26 @@
         mc:Ignorable="d"
         Title="Quản lý thanh toán" Height="450" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <!-- Tìm kiếm -->
+        <StackPanel Orientation="Horizontal" Margin="334,47,20,308">
+            <Label Content="Tìm kiếm bằng tên, sđt, mssv:" VerticalAlignment="Center" FontSize="16"/>
+            <TextBox x:Name="txtSearch" Width="200" Height="35" Margin="5" TextChanged="txtSearch_TextChanged"/>
+        </StackPanel>
 
         <!-- Phần Header -->
-        <TextBlock Text="Quản lý thanh toán" FontSize="24" HorizontalAlignment="Center" Margin="0,20"/>
+        <TextBlock Text="Quản lý thanh toán" FontSize="24" HorizontalAlignment="Center" Margin="0,10,0,377"/>
 
         <!-- Bảng dữ liệu để hiển thị thông tin thanh toán -->
-        <DataGrid x:Name="dgPayments" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False">
+        <DataGrid x:Name="dgPayments" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,110,0,8">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Mã thu tiền" Binding="{Binding MaThuTien}" Width="Auto"/>
+                <DataGridTextColumn Header="Mã hợp đồng" Binding="{Binding MaHopDong}" Width="Auto"/>
                 <DataGridTextColumn Header="Mã sinh viên" Binding="{Binding MaSinhVien}" Width="Auto"/>
                 <DataGridTextColumn Header="Tên sinh viên" Binding="{Binding TenSinhVien}" Width="Auto"/>
                 <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SoDienThoai}" Width="Auto"/>
                 <DataGridTextColumn Header="Số phòng" Binding="{Binding SoPhong}" Width="Auto"/>
                 <DataGridTextColumn Header="Giá thuê" Binding="{Binding GiaThue, StringFormat=N0}" Width="Auto"/>
+                <!-- Thêm cột này -->
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

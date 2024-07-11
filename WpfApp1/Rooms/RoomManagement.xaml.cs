@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace StudentManagement
 {
@@ -122,6 +123,24 @@ namespace StudentManagement
                         }
                     }
                 }
+            }
+        }
+
+        private void txtSearchRoom_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = txtSearchRoom.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                BangRooms.ItemsSource = Rooms;
+            }
+            else
+            {
+                var filteredList = Rooms.Where(room =>
+                    room.SoPhong.ToLower().Contains(searchText)
+                ).ToList();
+
+                BangRooms.ItemsSource = filteredList;
             }
         }
     }

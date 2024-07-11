@@ -25,7 +25,7 @@ namespace StudentManagement
         {
             students = new ObservableCollection<SinhVien>();
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "SELECT id AS MaSinhVien, fullname AS TenSinhVien, phoneNumber AS SoDienThoai, Room AS SoPhong FROM SinhVien";
+            string query = "SELECT id AS MaSinhVien, fullname AS TenSinhVien, phoneNumber AS SoDienThoai, SoPhong AS SoPhong FROM SinhVien";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -150,22 +150,15 @@ namespace StudentManagement
                 }
             }
 
-            // If an existing contract is found, display message and exit
-            if (existingContractId.HasValue)
-            {
-                MessageBox.Show("Phòng này đã có sinh viên đăng kí hợp đồng. Không thể đăng kí thêm hợp đồng cho phòng này.");
-                return;
-            }
-
             // Query to insert contract and retrieve student info
             string insertContractQuery = "INSERT INTO HopDong (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, NgayBatDau, NgayKetThuc, TrangThai) " +
                                          "OUTPUT INSERTED.MaHopDong " +
                                          "VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @NgayBatDau, @NgayKetThuc, 1); " +
                                          "SELECT fullname AS TenSinhVien, phoneNumber AS SoDienThoai FROM SinhVien WHERE id = @MaSinhVien";
 
-            // Query to insert payment record into ThuTien
-            string insertPaymentQuery = "INSERT INTO ThuTien (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, GiaThue) " +
-                                        "VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @GiaThue)";
+            // Query to insert payment record into ThuTien with MaHopDong
+            string insertPaymentQuery = "INSERT INTO ThuTien (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, GiaThue, MaHopDong) " +
+                                        "VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @GiaThue, @MaHopDong)";
 
             // Second SqlConnection for inserting new contract and payment
             using (SqlConnection insertConnection = new SqlConnection(connectionString))
@@ -181,13 +174,13 @@ namespace StudentManagement
                 try
                 {
                     insertConnection.Open();
-                    // Execute the query for inserting contract
-                    insertContractCommand.ExecuteNonQuery();
+                    // Execute the query for inserting contract and retrieve MaHopDong
+                    int maHopDong = Convert.ToInt32(insertContractCommand.ExecuteScalar());
 
                     // Update NewContract with retrieved student info
                     NewContract = new Contract()
                     {
-                        MaHopDong = GetNewContractId(), // Get new contract ID from database
+                        MaHopDong = maHopDong,
                         MaSinhVien = selectedStudent.id,
                         TenSinhVien = selectedStudent.fullname,
                         SoDienThoai = selectedStudent.phoneNumber,
@@ -196,13 +189,14 @@ namespace StudentManagement
                         NgayKetThuc = dpNgayKetThuc.SelectedDate.GetValueOrDefault()
                     };
 
-                    // Insert payment record into ThuTien
+                    // Insert payment record into ThuTien with MaHopDong
                     SqlCommand insertPaymentCommand = new SqlCommand(insertPaymentQuery, insertConnection);
                     insertPaymentCommand.Parameters.AddWithValue("@MaSinhVien", selectedStudent.id);
                     insertPaymentCommand.Parameters.AddWithValue("@TenSinhVien", selectedStudent.fullname);
                     insertPaymentCommand.Parameters.AddWithValue("@SoDienThoai", selectedStudent.phoneNumber);
                     insertPaymentCommand.Parameters.AddWithValue("@SoPhong", txtSoPhong.Text);
                     insertPaymentCommand.Parameters.AddWithValue("@GiaThue", GetRoomRent(txtSoPhong.Text));
+                    insertPaymentCommand.Parameters.AddWithValue("@MaHopDong", maHopDong);
 
                     insertPaymentCommand.ExecuteNonQuery();
 
