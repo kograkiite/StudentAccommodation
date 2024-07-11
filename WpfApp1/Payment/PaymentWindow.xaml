@@ -1,0 +1,30 @@
+﻿<Window x:Class="StudentManagement.Payment.PaymentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentManagement.Payment"
+        mc:Ignorable="d"
+        Title="PaymentWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <TextBlock Text="Payment Management" FontSize="24" HorizontalAlignment="Center" Margin="0,20"/>
+
+        <!-- Data Grid to Display Payments -->
+        <DataGrid x:Name="dgPayments" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                <DataGridTextColumn Header="Student ID" Binding="{Binding MaSinhVien}" Width="Auto"/>
+                <DataGridTextColumn Header="Student Name" Binding="{Binding TenSinhVien}" Width="Auto"/>
+                <DataGridTextColumn Header="Phone Number" Binding="{Binding SoDienThoai}" Width="Auto"/>
+                <DataGridTextColumn Header="Room Number" Binding="{Binding SoPhong}" Width="Auto"/>
+                <DataGridTextColumn Header="Room Rent" Binding="{Binding GiaThue, StringFormat=N0}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

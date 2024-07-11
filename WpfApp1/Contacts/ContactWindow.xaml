@@ -30,7 +30,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Đăng ký hợp đồng" Click="btnRegisterContract_Click" HorizontalAlignment="Left" Width="150" Margin="460,379,0,0" VerticalAlignment="Top" Height="32"/>
-        <Button Content="Sửa hợp đồng" Click="btnEditContract_Click" HorizontalAlignment="Left" Width="150" Margin="620,379,0,0" VerticalAlignment="Top" Height="32"/>
+        <Button Content="Gia hạn hợp đồng" Click="btnEditContract_Click" HorizontalAlignment="Left" Width="150" Margin="620,379,0,0" VerticalAlignment="Top" Height="32"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="Quản lý hợp đồng" VerticalAlignment="Top" FontSize="24"/>
     </Grid>
 </Window>

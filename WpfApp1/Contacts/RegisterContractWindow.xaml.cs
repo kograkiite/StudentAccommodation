@@ -124,26 +124,37 @@ namespace StudentManagement
             string checkRoomQuery = "SELECT MaHopDong FROM HopDong WHERE SoPhong = @SoPhong";
             int? existingContractId = null;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            // First SqlConnection for checking existing contract
+            using (SqlConnection checkRoomConnection = new SqlConnection(connectionString))
             {
-                SqlCommand checkRoomCommand = new SqlCommand(checkRoomQuery, connection);
+                SqlCommand checkRoomCommand = new SqlCommand(checkRoomQuery, checkRoomConnection);
                 checkRoomCommand.Parameters.AddWithValue("@SoPhong", txtSoPhong.Text);
 
                 try
                 {
-                    connection.Open();
+                    checkRoomConnection.Open();
                     object result = checkRoomCommand.ExecuteScalar();
                     if (result != DBNull.Value && result != null)
                     {
                         existingContractId = Convert.ToInt32(result);
+                        // Debugging statement
+                        Console.WriteLine($"Existing Contract ID found: {existingContractId}");
+                    }
+                    else
+                    {
+                        existingContractId = null; // Set explicitly to null if no contract exists
+                                                   // Debugging statement
+                        Console.WriteLine("No existing contract found for the room.");
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error checking existing contract: " + ex.Message);
+                    return; // Exit method on error
                 }
             }
 
+            // If an existing contract is found, display message and exit
             if (existingContractId.HasValue)
             {
                 MessageBox.Show("Phòng này đã có sinh viên đăng kí hợp đồng. Không thể đăng kí thêm hợp đồng cho phòng này.");
@@ -152,12 +163,18 @@ namespace StudentManagement
 
             // Query to insert contract and retrieve student info
             string insertContractQuery = "INSERT INTO HopDong (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, NgayBatDau, NgayKetThuc) " +
+                                         "OUTPUT INSERTED.MaHopDong " + 
                                          "VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @NgayBatDau, @NgayKetThuc); " +
                                          "SELECT fullname AS TenSinhVien, phoneNumber AS SoDienThoai FROM SinhVien WHERE id = @MaSinhVien";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            // Query to insert payment record into ThuTien
+            string insertPaymentQuery = "INSERT INTO ThuTien (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, GiaThue) " +
+                                        "VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @GiaThue)";
+
+            // Second SqlConnection for inserting new contract and payment
+            using (SqlConnection insertConnection = new SqlConnection(connectionString))
             {
-                SqlCommand insertContractCommand = new SqlCommand(insertContractQuery, connection);
+                SqlCommand insertContractCommand = new SqlCommand(insertContractQuery, insertConnection);
                 insertContractCommand.Parameters.AddWithValue("@MaSinhVien", selectedStudent.id);
                 insertContractCommand.Parameters.AddWithValue("@TenSinhVien", selectedStudent.fullname);
                 insertContractCommand.Parameters.AddWithValue("@SoDienThoai", selectedStudent.phoneNumber);
@@ -167,41 +184,40 @@ namespace StudentManagement
 
                 try
                 {
-                    connection.Open();
-                    // Execute the query
-                    SqlDataReader reader = insertContractCommand.ExecuteReader();
-                    if (reader.Read())
-                    {
-                        // Update NewContract with retrieved student info
-                        NewContract = new Contract()
-                        {
-                            MaHopDong = GetNewContractId(), // Get new contract ID from database
-                            MaSinhVien = selectedStudent.id,
-                            TenSinhVien = reader["TenSinhVien"].ToString(),
-                            SoDienThoai = reader["SoDienThoai"].ToString(),
-                            SoPhong = txtSoPhong.Text,
-                            NgayBatDau = dpNgayBatDau.SelectedDate.GetValueOrDefault(),
-                            NgayKetThuc = dpNgayKetThuc.SelectedDate.GetValueOrDefault()
-                        };
+                    insertConnection.Open();
+                    // Execute the query for inserting contract
+                    insertContractCommand.ExecuteNonQuery();
 
-                        // Update MaHopDong of the room
-                        int newContractId = NewContract.MaHopDong;
-                        string updateRoomQuery = "UPDATE Phong SET MaHopDong = @MaHopDong WHERE SoPhong = @SoPhong";
-                        SqlCommand updateRoomCommand = new SqlCommand(updateRoomQuery, connection);
-                        updateRoomCommand.Parameters.AddWithValue("@MaHopDong", newContractId);
-                        updateRoomCommand.Parameters.AddWithValue("@SoPhong", txtSoPhong.Text);
-                        updateRoomCommand.ExecuteNonQuery();
-
-                        // Display success message
-                        MessageBox.Show("Đăng ký hợp đồng thành công!");
-                        this.DialogResult = true;
-                        this.Close();
-                    }
-                    else
+                    // Update NewContract with retrieved student info
+                    NewContract = new Contract()
                     {
-                        MessageBox.Show("Không thể lấy thông tin sinh viên từ cơ sở dữ liệu sau khi thêm hợp đồng.");
-                    }
-                    reader.Close();
+                        MaHopDong = GetNewContractId(), // Get new contract ID from database
+                        MaSinhVien = selectedStudent.id,
+                        TenSinhVien = selectedStudent.fullname,
+                        SoDienThoai = selectedStudent.phoneNumber,
+                        SoPhong = txtSoPhong.Text,
+                        NgayBatDau = dpNgayBatDau.SelectedDate.GetValueOrDefault(),
+                        NgayKetThuc = dpNgayKetThuc.SelectedDate.GetValueOrDefault()
+                    };
+
+                    // Insert payment record into ThuTien
+                    SqlCommand insertPaymentCommand = new SqlCommand(insertPaymentQuery, insertConnection);
+                    insertPaymentCommand.Parameters.AddWithValue("@MaSinhVien", selectedStudent.id);
+                    insertPaymentCommand.Parameters.AddWithValue("@TenSinhVien", selectedStudent.fullname);
+                    insertPaymentCommand.Parameters.AddWithValue("@SoDienThoai", selectedStudent.phoneNumber);
+                    insertPaymentCommand.Parameters.AddWithValue("@SoPhong", txtSoPhong.Text);
+                    insertPaymentCommand.Parameters.AddWithValue("@GiaThue", GetRoomRent(txtSoPhong.Text));
+
+                    insertPaymentCommand.ExecuteNonQuery();
+
+                    // Display success message
+                    MessageBox.Show("Đăng ký hợp đồng thành công!");
+
+                    // Reload students after successful registration
+                    LoadStudents();
+
+                    this.DialogResult = true;
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
@@ -210,7 +226,34 @@ namespace StudentManagement
             }
         }
 
+        private decimal GetRoomRent(string soPhong)
+        {
+            // Kết nối cơ sở dữ liệu
+            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string query = "SELECT GiaThue FROM Phong WHERE SoPhong = @SoPhong";
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@SoPhong", soPhong);
+
+                try
+                {
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != DBNull.Value && result != null)
+                    {
+                        return Convert.ToDecimal(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+
+            return 0; // Return 0 if unable to retrieve room rent
+        }
 
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

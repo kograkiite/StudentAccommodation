@@ -23,8 +23,9 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,30">
-            <Button x:Name="btnManageRoom" Content="Quản lý phòng" Width="150" Click="btnManageRoom_Click" Background="#FF1E90FF" Height="32" Margin="0,0,10,0"/>
-            <Button x:Name="btnManageContract" Content="Quản lý hợp đồng" Click="OpenContractWindow_Click" Width="150" Background="#FF1E90FF" Height="32"/>
+            <Button x:Name="btnManageRoom" Content="Quản lý phòng" Width="100" Click="btnManageRoom_Click" Background="#FF1E90FF" Height="32" Margin="0,0,10,0"/>
+            <Button x:Name="btnManageContract" Content="Quản lý hợp đồng" Click="OpenContractWindow_Click" Width="100" Background="#FF1E90FF" Height="32"/>
+            <Button x:Name="btnManagePayments" Content="Quản lý thu tiền" Width="100" Click="btnManagePayments_Click" Background="#FF1E90FF" Height="32" Margin="10,0,0,0"/>
         </StackPanel>
 
         <TextBlock HorizontalAlignment="Center" Margin="32,10,0,0" TextWrapping="Wrap" Text="Quản lý chỗ ở sinh viên" VerticalAlignment="Top" FontSize="24"/>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using StudentManagement;
+using StudentManagement.Payment;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -179,6 +180,11 @@ namespace WpfApp1
         {
             ContractWindow contractWindow = new ContractWindow();
             contractWindow.Show();
+        }
+        private void btnManagePayments_Click(object sender, RoutedEventArgs e)
+        {
+            PaymentWindow paymentWindow = new PaymentWindow();
+            paymentWindow.ShowDialog();
         }
     }
 
