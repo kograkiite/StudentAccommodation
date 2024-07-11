@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
+using StudentManagement;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace WpfApp1
@@ -7,10 +9,12 @@ namespace WpfApp1
     public partial class UpdateStudentWindow : Window
     {
         public SinhVien UpdatedStudent { get; private set; }
+        public ObservableCollection<string> Rooms { get; private set; }
 
         public UpdateStudentWindow(SinhVien student)
         {
             InitializeComponent();
+            LoadRooms();
 
             // Điền thông tin sinh viên vào các trường
             txtId.Text = student.id;
@@ -20,24 +24,71 @@ namespace WpfApp1
             rbFemale.IsChecked = student.sex == "Nữ";
             dpDateOfBirth.SelectedDate = student.dateOfBirth;
 
+            // Load thông tin phòng của sinh viên vào ComboBox
+            cbRoom.SelectedItem = student.Room;
+
             // Không cho phép chỉnh sửa ID
             txtId.IsEnabled = false;
         }
 
+        private void LoadRooms()
+        {
+            Rooms = new ObservableCollection<string>();
+            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string query = "SELECT SoPhong FROM Phong";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Rooms.Add(reader["SoPhong"].ToString());
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            cbRoom.ItemsSource = Rooms;
+        }
+
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            // Kiểm tra nếu các trường thông tin bị bỏ trống
+            // Validate input fields
             if (string.IsNullOrWhiteSpace(txtFullname.Text) ||
                 string.IsNullOrWhiteSpace(txtPhoneNumber.Text) ||
                 (!rbMale.IsChecked.HasValue && !rbFemale.IsChecked.HasValue) ||
-                !dpDateOfBirth.SelectedDate.HasValue)
+                !dpDateOfBirth.SelectedDate.HasValue ||
+                cbRoom.SelectedItem == null)
             {
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
+            // Retrieve current room of the student
+            string currentRoom = GetCurrentRoom(txtId.Text);
+
+            // Check if room update is necessary
+            if (cbRoom.SelectedItem.ToString() != currentRoom)
+            {
+                // Update current room's information (subtract the student)
+                UpdateRoomInfo(currentRoom, -1);
+
+                // Update new room's information (add the student)
+                UpdateRoomInfo(cbRoom.SelectedItem.ToString(), 1);
+            }
+
+            // Proceed with updating student information
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "UPDATE SinhVien SET fullname = @fullname, phoneNumber = @phoneNumber, sex = @sex, dateOfBirth = @dateOfBirth WHERE id = @id";
+            string query = "UPDATE SinhVien SET fullname = @fullname, phoneNumber = @phoneNumber, sex = @sex, dateOfBirth = @dateOfBirth, Room = @room WHERE id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -47,6 +98,7 @@ namespace WpfApp1
                 command.Parameters.AddWithValue("@phoneNumber", txtPhoneNumber.Text);
                 command.Parameters.AddWithValue("@sex", rbMale.IsChecked == true ? "Nam" : "Nữ");
                 command.Parameters.AddWithValue("@dateOfBirth", dpDateOfBirth.SelectedDate.HasValue ? dpDateOfBirth.SelectedDate.Value : DateTime.MinValue);
+                command.Parameters.AddWithValue("@room", cbRoom.SelectedItem.ToString());
 
                 try
                 {
@@ -61,7 +113,8 @@ namespace WpfApp1
                             fullname = txtFullname.Text,
                             phoneNumber = txtPhoneNumber.Text,
                             sex = rbMale.IsChecked == true ? "Nam" : "Nữ",
-                            dateOfBirth = dpDateOfBirth.SelectedDate.HasValue ? dpDateOfBirth.SelectedDate.Value : DateTime.MinValue
+                            dateOfBirth = dpDateOfBirth.SelectedDate.HasValue ? dpDateOfBirth.SelectedDate.Value : DateTime.MinValue,
+                            Room = cbRoom.SelectedItem.ToString()
                         };
                         DialogResult = true;
                         Close();
@@ -78,6 +131,59 @@ namespace WpfApp1
             }
         }
 
+        // Method to retrieve current room of the student
+        private string GetCurrentRoom(string studentId)
+        {
+            string room = string.Empty;
+            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string query = "SELECT Room FROM SinhVien WHERE id = @id";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@id", studentId);
+
+                try
+                {
+                    connection.Open();
+                    var result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        room = result.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            return room;
+        }
+
+        // Method to update room information (SoLuongSinhVienHienTai and TrangThaiPhong)
+        private void UpdateRoomInfo(string room, int studentChange)
+        {
+            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string query = "UPDATE Phong SET SoLuongSinhVienHienTai = SoLuongSinhVienHienTai + @studentChange, TrangThaiPhong = CASE WHEN SoLuongSinhVienHienTai + @studentChange = SucChua THEN 0 ELSE 1 END WHERE SoPhong = @Room";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@studentChange", studentChange);
+                command.Parameters.AddWithValue("@Room", room);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {

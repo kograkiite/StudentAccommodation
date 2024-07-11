@@ -42,7 +42,9 @@ namespace StudentManagement
                         {
                             SoPhong = row["SoPhong"].ToString(),
                             SucChua = Convert.ToInt32(row["SucChua"]),
-                            GiaThue = Convert.ToDecimal(row["GiaThue"])
+                            GiaThue = Convert.ToDecimal(row["GiaThue"]),
+                            SoLuongSinhVienHienTai = Convert.ToInt32(row["SoLuongSinhVienHienTai"]),
+                            TrangThaiPhong = Convert.ToBoolean(row["TrangThaiPhong"]) ? "Còn chỗ" : "Hết chỗ"
                         });
                     }
                 }
@@ -129,5 +131,7 @@ namespace StudentManagement
         public string SoPhong { get; set; }
         public int SucChua { get; set; }
         public decimal GiaThue { get; set; }
+        public int SoLuongSinhVienHienTai { get; set; }
+        public string TrangThaiPhong { get; set; }
     }
 }

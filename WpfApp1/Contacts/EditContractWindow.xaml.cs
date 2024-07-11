@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace StudentManagement
@@ -7,12 +8,29 @@ namespace StudentManagement
     public partial class EditContractWindow : Window
     {
         public Contract UpdatedContract { get; private set; }
+        private Contract tempContract;
+        private ObservableCollection<Contract> Contracts;
+        private int SelectedIndex;
 
-        public EditContractWindow(Contract contract)
+        public EditContractWindow(Contract contract, ObservableCollection<Contract> contracts, int selectedIndex)
         {
             InitializeComponent();
-            UpdatedContract = contract;
-            DataContext = UpdatedContract;
+            Contracts = contracts;
+            SelectedIndex = selectedIndex;
+
+            // Tạo một bản sao của hợp đồng để hiển thị trong giao diện
+            tempContract = new Contract
+            {
+                MaHopDong = contract.MaHopDong,
+                MaSinhVien = contract.MaSinhVien,
+                TenSinhVien = contract.TenSinhVien,
+                SoDienThoai = contract.SoDienThoai,
+                SoPhong = contract.SoPhong,
+                NgayBatDau = contract.NgayBatDau,
+                NgayKetThuc = contract.NgayKetThuc
+            };
+
+            DataContext = tempContract;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -22,8 +40,7 @@ namespace StudentManagement
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            // Kiểm tra ngày bắt đầu không lớn hơn ngày kết thúc
-            if (UpdatedContract.NgayBatDau > UpdatedContract.NgayKetThuc)
+            if (tempContract.NgayBatDau > tempContract.NgayKetThuc)
             {
                 MessageBox.Show("Ngày bắt đầu không được lớn hơn ngày kết thúc!");
                 return;
@@ -31,16 +48,18 @@ namespace StudentManagement
 
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
 
-            string query = "UPDATE HopDong SET MaSinhVien = @MaSinhVien, SoPhong = @SoPhong, NgayBatDau = @NgayBatDau, NgayKetThuc = @NgayKetThuc WHERE MaHopDong = @MaHopDong";
+            string query = "UPDATE HopDong SET MaSinhVien = @MaSinhVien, TenSinhVien = @TenSinhVien, SoDienThoai = @SoDienThoai, SoPhong = @SoPhong, NgayBatDau = @NgayBatDau, NgayKetThuc = @NgayKetThuc WHERE MaHopDong = @MaHopDong";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@MaSinhVien", UpdatedContract.MaSinhVien);
-                command.Parameters.AddWithValue("@SoPhong", UpdatedContract.SoPhong);
-                command.Parameters.AddWithValue("@NgayBatDau", UpdatedContract.NgayBatDau);
-                command.Parameters.AddWithValue("@NgayKetThuc", UpdatedContract.NgayKetThuc);
-                command.Parameters.AddWithValue("@MaHopDong", UpdatedContract.MaHopDong);
+                command.Parameters.AddWithValue("@MaSinhVien", tempContract.MaSinhVien);
+                command.Parameters.AddWithValue("@TenSinhVien", tempContract.TenSinhVien);
+                command.Parameters.AddWithValue("@SoDienThoai", tempContract.SoDienThoai);
+                command.Parameters.AddWithValue("@SoPhong", tempContract.SoPhong);
+                command.Parameters.AddWithValue("@NgayBatDau", tempContract.NgayBatDau);
+                command.Parameters.AddWithValue("@NgayKetThuc", tempContract.NgayKetThuc);
+                command.Parameters.AddWithValue("@MaHopDong", tempContract.MaHopDong);
 
                 try
                 {
@@ -48,6 +67,14 @@ namespace StudentManagement
                     int rowsAffected = command.ExecuteNonQuery();
                     if (rowsAffected > 0)
                     {
+                        UpdatedContract = tempContract; // Cập nhật giá trị của UpdatedContract
+
+                        // Cập nhật ObservableCollection trực tiếp
+                        if (Contracts != null && SelectedIndex >= 0 && SelectedIndex < Contracts.Count)
+                        {
+                            Contracts[SelectedIndex] = UpdatedContract;
+                        }
+
                         MessageBox.Show("Sửa hợp đồng thành công!");
                         DialogResult = true;
                         Close();
@@ -63,6 +90,5 @@ namespace StudentManagement
                 }
             }
         }
-
     }
 }

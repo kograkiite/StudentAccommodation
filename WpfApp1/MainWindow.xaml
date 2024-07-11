@@ -12,20 +12,21 @@
                 <DataGridTextColumn Header="SĐT" Binding="{Binding phoneNumber}" />
                 <DataGridTextColumn Header="Giới Tính" Binding="{Binding sex}" />
                 <DataGridTextColumn Header="Ngày Sinh" Binding="{Binding dateOfBirth, StringFormat=dd/MM/yyyy}" />
+                <DataGridTextColumn Header="Phòng" Binding="{Binding Room}" />
             </DataGrid.Columns>
         </DataGrid>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,30">
-            <Button x:Name="btnAdd" Content="Add" Width="96" Click="btnAdd_Click" Background="#FF03AB0F" Height="35"/>
-            <Button x:Name="btnUpdate" Content="Update" Width="104" Margin="10,0,0,0" Click="btnUpdate_Click" Background="#FFFFF400"/>
-            <Button x:Name="btnDelete" Content="Delete" Width="105" Margin="10,0,0,0" Click="btnDelete_Click" Background="#FFFF6700" Height="32"/>
+            <Button x:Name="btnAdd" Content="Thêm" Width="96" Click="btnAdd_Click" Background="#FF03AB0F" Height="35"/>
+            <Button x:Name="btnUpdate" Content="Cập nhật" Width="104" Margin="10,0,0,0" Click="btnUpdate_Click" Background="#FFFFF400"/>
+            <Button x:Name="btnDelete" Content="Xóa" Width="105" Margin="10,0,0,0" Click="btnDelete_Click" Background="#FFFF6700" Height="32"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,30">
             <Button x:Name="btnManageRoom" Content="Quản lý phòng" Width="150" Click="btnManageRoom_Click" Background="#FF1E90FF" Height="32" Margin="0,0,10,0"/>
-            <Button x:Name="btnManageContact" Content="Quản lý hợp đồng" Click="OpenContractWindow_Click" Width="150" Background="#FF1E90FF" Height="32"/>
+            <Button x:Name="btnManageContract" Content="Quản lý hợp đồng" Click="OpenContractWindow_Click" Width="150" Background="#FF1E90FF" Height="32"/>
         </StackPanel>
 
-        <TextBlock HorizontalAlignment="Center" Margin="32,10,0,0" TextWrapping="Wrap" Text="Quản lý sinh viên" VerticalAlignment="Top" FontSize="24"/>
+        <TextBlock HorizontalAlignment="Center" Margin="32,10,0,0" TextWrapping="Wrap" Text="Quản lý chỗ ở sinh viên" VerticalAlignment="Top" FontSize="24"/>
     </Grid>
 </Window>

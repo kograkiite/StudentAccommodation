@@ -44,7 +44,8 @@ namespace WpfApp1
                             fullname = row["fullname"].ToString(),
                             phoneNumber = row["phoneNumber"].ToString(),
                             sex = row["sex"].ToString(),
-                            dateOfBirth = Convert.ToDateTime(row["dateOfBirth"])
+                            dateOfBirth = Convert.ToDateTime(row["dateOfBirth"]),
+                            Room = row["Room"].ToString() 
                         });
                     }
                 }
@@ -82,6 +83,27 @@ namespace WpfApp1
             }
         }
 
+        private void UpdateRoomInfoAfterDelete(string room)
+        {
+            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string updateRoomQuery = "UPDATE Phong SET SoLuongSinhVienHienTai = SoLuongSinhVienHienTai - 1, TrangThaiPhong = CASE WHEN SoLuongSinhVienHienTai - 1 < SucChua THEN 1 ELSE 0 END WHERE SoPhong = @Room";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(updateRoomQuery, connection);
+                command.Parameters.AddWithValue("@Room", room);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             var selectedStudents = BangSinhVien.SelectedItems;
@@ -94,37 +116,58 @@ namespace WpfApp1
             if (MessageBox.Show("Bạn có chắc chắn muốn xóa sinh viên đã chọn không?", "Xác nhận", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-                string query = "DELETE FROM SinhVien WHERE id = @id";
+                string deleteQuery = "DELETE FROM SinhVien WHERE id = @id";
+                string updateRoomQuery = "UPDATE Phong SET SoLuongSinhVienHienTai = SoLuongSinhVienHienTai - 1, TrangThaiPhong = CASE WHEN SoLuongSinhVienHienTai - 1 < SucChua THEN 1 ELSE 0 END WHERE SoPhong = @Room";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    foreach (var selectedItem in selectedStudents)
+                    for (int i = selectedStudents.Count - 1; i >= 0; i--)
                     {
-                        var student = (SinhVien)selectedItem;
-                        SqlCommand command = new SqlCommand(query, connection);
-                        command.Parameters.AddWithValue("@id", student.id);
-                        try
+                        var student = (SinhVien)selectedStudents[i];
+
+                        // Xóa sinh viên
+                        using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection))
                         {
-                            int rowsAffected = command.ExecuteNonQuery();
-                            if (rowsAffected > 0)
+                            deleteCommand.Parameters.AddWithValue("@id", student.id);
+                            try
                             {
-                                SinhVien.Remove(student);
-                                MessageBox.Show($"Xóa sinh viên {student.fullname} thành công.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                                int rowsAffected = deleteCommand.ExecuteNonQuery();
+                                if (rowsAffected > 0)
+                                {
+                                    SinhVien.Remove(student);
+                                    MessageBox.Show($"Xóa sinh viên {student.fullname} thành công.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                                    // Cập nhật thông tin phòng sau khi xóa sinh viên
+                                    using (SqlCommand updateRoomCommand = new SqlCommand(updateRoomQuery, connection))
+                                    {
+                                        updateRoomCommand.Parameters.AddWithValue("@Room", student.Room);
+                                        try
+                                        {
+                                            updateRoomCommand.ExecuteNonQuery();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            MessageBox.Show("Error: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show($"Xóa sinh viên {student.fullname} không thành công.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                MessageBox.Show($"Xóa sinh viên {student.fullname} không thành công.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show("Error: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return; // Dừng lại nếu gặp lỗi
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Error: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }
             }
         }
+
 
         private void btnManageRoom_Click(object sender, RoutedEventArgs e)
         {
@@ -146,5 +189,6 @@ namespace WpfApp1
         public string phoneNumber { get; set; }
         public string sex { get; set; }
         public DateTime dateOfBirth { get; set; }
+        public string Room { get; set; } // Thêm thuộc tính Room
     }
 }

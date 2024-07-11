@@ -22,7 +22,9 @@ namespace StudentManagement
         private void LoadContractsFromDatabase()
         {
             string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "SELECT * FROM HopDong";
+            string query = "SELECT hd.MaHopDong, hd.MaSinhVien, sv.fullname AS TenSinhVien, sv.phoneNumber AS SoDienThoai, hd.SoPhong, hd.NgayBatDau, hd.NgayKetThuc " +
+                           "FROM HopDong hd " +
+                           "INNER JOIN SinhVien sv ON hd.MaSinhVien = sv.id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -41,6 +43,8 @@ namespace StudentManagement
                         {
                             MaHopDong = Convert.ToInt32(row["MaHopDong"]),
                             MaSinhVien = row["MaSinhVien"].ToString(),
+                            TenSinhVien = row["TenSinhVien"].ToString(),
+                            SoDienThoai = row["SoDienThoai"].ToString(),
                             SoPhong = row["SoPhong"].ToString(),
                             NgayBatDau = Convert.ToDateTime(row["NgayBatDau"]),
                             NgayKetThuc = Convert.ToDateTime(row["NgayKetThuc"])
@@ -54,7 +58,6 @@ namespace StudentManagement
             }
         }
 
-
         private void btnRegisterContract_Click(object sender, RoutedEventArgs e)
         {
             var registerWindow = new RegisterContractWindow();
@@ -63,7 +66,6 @@ namespace StudentManagement
                 Contracts.Add(registerWindow.NewContract);
             }
         }
-
 
         private void btnEditContract_Click(object sender, RoutedEventArgs e)
         {
@@ -74,21 +76,43 @@ namespace StudentManagement
             }
 
             Contract selectedContract = (Contract)dataGrid.SelectedItem;
-            EditContractWindow editWindow = new EditContractWindow(selectedContract);
+            if (selectedContract == null)
+            {
+                MessageBox.Show("Hợp đồng được chọn không hợp lệ.");
+                return;
+            }
+
+            int selectedIndex = Contracts.IndexOf(selectedContract);
+            if (selectedIndex < 0 || selectedIndex >= Contracts.Count)
+            {
+                MessageBox.Show("Chỉ số hợp đồng không hợp lệ.");
+                return;
+            }
+
+            EditContractWindow editWindow = new EditContractWindow(selectedContract, Contracts, selectedIndex);
 
             if (editWindow.ShowDialog() == true)
             {
                 Contract updatedContract = editWindow.UpdatedContract;
-                int index = Contracts.IndexOf(selectedContract);
-                Contracts[index] = updatedContract;
+                if (updatedContract != null)
+                {
+                    Contracts[selectedIndex] = updatedContract;
+                }
+                else
+                {
+                    MessageBox.Show("Hợp đồng cập nhật không hợp lệ.");
+                }
             }
         }
-    }   
+
+    }
 
     public class Contract
     {
         public int MaHopDong { get; set; }
         public string MaSinhVien { get; set; }
+        public string TenSinhVien { get; set; }
+        public string SoDienThoai { get; set; }
         public string SoPhong { get; set; }
         public DateTime NgayBatDau { get; set; }
         public DateTime NgayKetThuc { get; set; }

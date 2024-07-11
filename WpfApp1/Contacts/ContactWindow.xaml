@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Contract Window" Height="450" Width="800">
+        Title="Contract Window" Height="470" Width="800">
     <Grid>
         <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Height="244" Width="760">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Mã Hợp Đồng" Binding="{Binding MaHopDong}" Width="Auto" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Mã Sinh Viên" Binding="{Binding MaSinhVien}" Width="Auto"/>
+                <DataGridTextColumn Header="Tên Sinh Viên" Binding="{Binding TenSinhVien}" Width="Auto"/>
+                <DataGridTextColumn Header="Số Điện Thoại" Binding="{Binding SoDienThoai}" Width="Auto"/>
                 <DataGridTextColumn Header="Số Phòng" Binding="{Binding SoPhong}" Width="Auto"/>
                 <DataGridTemplateColumn Header="Ngày Bắt Đầu" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>

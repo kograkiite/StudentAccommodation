@@ -7,7 +7,9 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Số Phòng" Binding="{Binding SoPhong}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Sức Chứa" Binding="{Binding SucChua}"/>
-                <DataGridTextColumn Header="Giá Thuê" Binding="{Binding GiaThue}"/>
+                <DataGridTextColumn Header="Số Lượng Sinh Viên Hiện Tại" Binding="{Binding SoLuongSinhVienHienTai}"/>
+                <DataGridTextColumn Header="Giá Thuê" Binding="{Binding GiaThue, StringFormat=N0}"/>
+                <DataGridTextColumn Header="Trạng Thái Phòng" Binding="{Binding TrangThaiPhong}"/>
             </DataGrid.Columns>
         </DataGrid>
 
