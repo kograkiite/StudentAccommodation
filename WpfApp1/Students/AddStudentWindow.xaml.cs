@@ -20,7 +20,7 @@ namespace WpfApp1
         private void LoadRooms()
         {
             Rooms = new ObservableCollection<string>();
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT SoPhong FROM Phong WHERE TrangThaiPhong = 1"; // Chỉ lấy những phòng có TrangThaiPhong = 1
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -48,7 +48,7 @@ namespace WpfApp1
 
         private bool CheckRoomCapacity(string room)
         {
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT SucChua, SoLuongSinhVienHienTai FROM Phong WHERE SoPhong = @Room";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -81,7 +81,7 @@ namespace WpfApp1
 
         private void UpdateRoomInfo(string room)
         {
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "UPDATE Phong SET SoLuongSinhVienHienTai = SoLuongSinhVienHienTai + 1, TrangThaiPhong = CASE WHEN SoLuongSinhVienHienTai + 1 = SucChua THEN 0 ELSE 1 END WHERE SoPhong = @Room";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -146,7 +146,7 @@ namespace WpfApp1
                 return;
             }
 
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "INSERT INTO SinhVien (id, fullname, phoneNumber, sex, dateOfBirth, SoPhong) VALUES (@id, @fullname, @phoneNumber, @sex, @dateOfBirth, @Room)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

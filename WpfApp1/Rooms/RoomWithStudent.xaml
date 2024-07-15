@@ -1,0 +1,30 @@
+﻿<Window x:Class="StudentManagement.Rooms.RoomWithStudent"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentManagement.Rooms"
+        mc:Ignorable="d"
+        Title="RoomWithStudent" Height="450" Width="800">
+    <Grid>
+        <!-- Ô tìm kiếm -->
+        <StackPanel Orientation="Horizontal" Margin="438,21,32,354">
+            <Label Content="Tìm kiếm số phòng:" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtSearchRoom" Width="200" Height="35" Margin="5" TextChanged="txtSearchRoom_TextChanged"/>
+        </StackPanel>
+
+        <!-- DataGrid hiển thị danh sách phòng -->
+        <DataGrid x:Name="BangRooms" AutoGenerateColumns="False" VerticalAlignment="Center" Height="304" Margin="10,50,10,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Số Phòng" Binding="{Binding SoPhong}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Sức Chứa" Binding="{Binding SucChua}"/>
+                <DataGridTextColumn Header="Số Lượng Sinh Viên Hiện Tại" Binding="{Binding SoLuongSinhVienHienTai}"/>
+                <DataGridTextColumn Header="Giá Thuê" Binding="{Binding GiaThue, StringFormat=N0}"/>
+                <DataGridTextColumn Header="Trạng Thái Phòng" Binding="{Binding TrangThaiPhong}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Tiêu đề -->
+        <TextBlock HorizontalAlignment="Left" Margin="223,30,0,0" TextWrapping="Wrap" Text="Danh sách phòng" VerticalAlignment="Top" FontSize="24"/>
+    </Grid>
+</Window>

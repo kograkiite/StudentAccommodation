@@ -34,7 +34,7 @@ namespace WpfApp1
         private void LoadRooms()
         {
             Rooms = new ObservableCollection<string>();
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT SoPhong FROM Phong WHERE TrangThaiPhong = 1"; // Chỉ lấy những phòng có TrangThaiPhong = 1
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -112,7 +112,7 @@ namespace WpfApp1
             }
 
             // Proceed with updating student information
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "UPDATE SinhVien SET fullname = @fullname, phoneNumber = @phoneNumber, sex = @sex, dateOfBirth = @dateOfBirth, SoPhong = @room WHERE id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -160,7 +160,7 @@ namespace WpfApp1
         private string GetCurrentRoom(string studentId)
         {
             string room = string.Empty;
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT SoPhong FROM SinhVien WHERE id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -189,7 +189,7 @@ namespace WpfApp1
         // Method to update room information (SoLuongSinhVienHienTai and TrangThaiPhong)
         private void UpdateRoomInfo(string room, int studentChange)
         {
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "UPDATE Phong SET SoLuongSinhVienHienTai = SoLuongSinhVienHienTai + @studentChange, TrangThaiPhong = CASE WHEN SoLuongSinhVienHienTai + @studentChange = SucChua THEN 0 ELSE 1 END WHERE SoPhong = @Room";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

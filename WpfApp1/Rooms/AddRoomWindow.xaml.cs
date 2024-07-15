@@ -75,7 +75,7 @@ namespace StudentManagement
                 TrangThaiPhong = "Còn chỗ"
             };
 
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "INSERT INTO Phong (SoPhong, SucChua, GiaThue, SoLuongSinhVienHienTai, TrangThaiPhong) VALUES (@SoPhong, @SucChua, @GiaThue, @SoLuongSinhVienHienTai, @TrangThaiPhong)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

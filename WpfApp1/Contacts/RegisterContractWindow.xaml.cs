@@ -24,7 +24,7 @@ namespace StudentManagement
         private void LoadStudents()
         {
             students = new ObservableCollection<SinhVien>();
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT id AS MaSinhVien, fullname AS TenSinhVien, phoneNumber AS SoDienThoai, SoPhong AS SoPhong FROM SinhVien";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -114,7 +114,7 @@ namespace StudentManagement
                 return;
             }
 
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
 
             // Check if the selected room already has a contract
             string checkRoomQuery = "SELECT MaHopDong FROM HopDong WHERE SoPhong = @SoPhong";
@@ -219,7 +219,7 @@ namespace StudentManagement
         private decimal GetRoomRent(string soPhong)
         {
             // Kết nối cơ sở dữ liệu
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT GiaThue FROM Phong WHERE SoPhong = @SoPhong";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -255,7 +255,7 @@ namespace StudentManagement
         private int GetNewContractId()
         {
             // Kết nối cơ sở dữ liệu
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT IDENT_CURRENT('HopDong')";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

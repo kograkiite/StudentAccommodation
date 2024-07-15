@@ -1,18 +1,29 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
-namespace StudentManagement
+namespace StudentManagement.Rooms
 {
-    public partial class RoomManagement : Window
+    /// <summary>
+    /// Interaction logic for RoomWithStudent.xaml
+    /// </summary>
+    public partial class RoomWithStudent : Window
     {
         public ObservableCollection<Room> Rooms { get; set; }
-
-        public RoomManagement()
+        public RoomWithStudent()
         {
             InitializeComponent();
             Rooms = new ObservableCollection<Room>();
@@ -20,7 +31,6 @@ namespace StudentManagement
 
             LoadRoomsFromDatabase();
         }
-
         private void LoadRoomsFromDatabase()
         {
             string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
@@ -143,14 +153,5 @@ namespace StudentManagement
                 BangRooms.ItemsSource = filteredList;
             }
         }
-    }
-
-    public class Room
-    {
-        public string SoPhong { get; set; }
-        public int SucChua { get; set; }
-        public decimal GiaThue { get; set; }
-        public int SoLuongSinhVienHienTai { get; set; }
-        public string TrangThaiPhong { get; set; }
     }
 }

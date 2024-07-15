@@ -23,7 +23,7 @@ namespace StudentManagement.Payment
 
         private void LoadPaymentsFromDatabase()
         {
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT t.MaThuTien, t.MaSinhVien, t.TenSinhVien, t.SoDienThoai, t.SoPhong, t.GiaThue, t.MaHopDong " +
                            "FROM ThuTien t " +
                            "WHERE t.TrangThai = 1"; // Only select records with TrangThai = 1

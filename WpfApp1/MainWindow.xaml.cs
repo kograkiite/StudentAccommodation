@@ -25,7 +25,7 @@ namespace WpfApp1
 
         private void LoadDataFromDatabase()
         {
-            string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT id, fullname, phoneNumber, sex, dateOfBirth, SoPhong FROM SinhVien";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -97,7 +97,7 @@ namespace WpfApp1
 
             if (MessageBox.Show("Bạn có chắc chắn muốn xóa sinh viên đã chọn không?", "Xác nhận", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                string connectionString = "Data Source=DESKTOP-C809PVE\\SQLEXPRESS01;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+                string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
                 string deleteQuery = "DELETE FROM SinhVien WHERE id = @id";
                 string updateRoomQuery = "UPDATE Phong SET SoLuongSinhVienHienTai = SoLuongSinhVienHienTai - 1, TrangThaiPhong = CASE WHEN SoLuongSinhVienHienTai - 1 < SucChua THEN 1 ELSE 0 END WHERE SoPhong = @Room";
 

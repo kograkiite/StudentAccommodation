@@ -47,3 +47,4 @@ CREATE TABLE ThuTien (
     FOREIGN KEY (MaHopDong) REFERENCES HopDong(MaHopDong)
 );
 
+
