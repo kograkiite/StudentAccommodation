@@ -8,5 +8,7 @@
             <Button Content="Room Student" Width="150" Margin="10" Click="RoomStudent_Click"/>
             <Button Content="Payment Infomation" Width="150" Margin="10" Click="Payment_Click"/>
         </StackPanel>
+        <Button x:Name="btnLogout" Content="Logout" Width="71" Height="30" Margin="0,293,0,0" Click="btnLogout_Click" Background="red" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>

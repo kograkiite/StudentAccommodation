@@ -47,4 +47,12 @@ CREATE TABLE ThuTien (
     FOREIGN KEY (MaHopDong) REFERENCES HopDong(MaHopDong)
 );
 
-
+-- Table: Users (for login and role management)
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(50) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(255) NOT NULL,
+    Role NVARCHAR(20) NOT NULL CHECK (Role IN ('student', 'admin')),
+    SinhVienID VARCHAR(50),
+    FOREIGN KEY (SinhVienID) REFERENCES SinhVien(id)
+);

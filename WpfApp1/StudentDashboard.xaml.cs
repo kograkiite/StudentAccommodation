@@ -34,5 +34,15 @@ namespace StudentManagement
             PaymentWindow pw = new PaymentWindow();
             pw.Show();
         }
+
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            // Show the Login window
+            Login loginWindow = new Login();
+            loginWindow.Show();
+
+            // Close the MainWindow
+            this.Close();
+        }
     }
 }
