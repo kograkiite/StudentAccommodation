@@ -117,8 +117,8 @@ namespace StudentManagement
             string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
 
             // Check if the selected room already has a contract
-            string checkRoomQuery = "SELECT MaHopDong FROM HopDong WHERE SoPhong = @SoPhong";
-            int? existingContractId = null;
+            string checkRoomQuery = "SELECT COUNT(*) FROM HopDong WHERE SoPhong = @SoPhong AND TrangThai = 1";
+            int existingContracts = 0;
 
             // First SqlConnection for checking existing contract
             using (SqlConnection checkRoomConnection = new SqlConnection(connectionString))
@@ -129,18 +129,12 @@ namespace StudentManagement
                 try
                 {
                     checkRoomConnection.Open();
-                    object result = checkRoomCommand.ExecuteScalar();
-                    if (result != DBNull.Value && result != null)
+                    existingContracts = (int)checkRoomCommand.ExecuteScalar();
+
+                    if (existingContracts > 0)
                     {
-                        existingContractId = Convert.ToInt32(result);
-                        // Debugging statement
-                        Console.WriteLine($"Existing Contract ID found: {existingContractId}");
-                    }
-                    else
-                    {
-                        existingContractId = null; // Set explicitly to null if no contract exists
-                                                   // Debugging statement
-                        Console.WriteLine("No existing contract found for the room.");
+                        MessageBox.Show("Phòng này đã có hợp đồng hợp lệ. Vui lòng chọn phòng khác.");
+                        return; // Exit method if room already has a contract
                     }
                 }
                 catch (Exception ex)
@@ -153,8 +147,7 @@ namespace StudentManagement
             // Query to insert contract and retrieve student info
             string insertContractQuery = "INSERT INTO HopDong (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, NgayBatDau, NgayKetThuc, TrangThai) " +
                                          "OUTPUT INSERTED.MaHopDong " +
-                                         "VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @NgayBatDau, @NgayKetThuc, 1); " +
-                                         "SELECT fullname AS TenSinhVien, phoneNumber AS SoDienThoai FROM SinhVien WHERE id = @MaSinhVien";
+                                         "VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @NgayBatDau, @NgayKetThuc, 1);";
 
             // Query to insert payment record into ThuTien with MaHopDong
             string insertPaymentQuery = "INSERT INTO ThuTien (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, GiaThue, MaHopDong) " +
@@ -215,6 +208,7 @@ namespace StudentManagement
                 }
             }
         }
+
 
         private decimal GetRoomRent(string soPhong)
         {
