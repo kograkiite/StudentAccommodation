@@ -4,11 +4,18 @@
         Title="Student Dashboard" Height="450" Width="800">
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button Content="Register Contract" Width="150" Margin="10" Click="RegisterContract_Click"/>
-            <Button Content="Room Student" Width="150" Margin="10" Click="RoomStudent_Click"/>
-            <Button Content="Payment Infomation" Width="150" Margin="10" Click="Payment_Click"/>
-        </StackPanel>
-        <Button x:Name="btnLogout" Content="Logout" Width="71" Height="30" Margin="0,293,0,0" Click="btnLogout_Click" Background="red" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <!-- Centered Welcome Message -->
+            <TextBlock x:Name="WelcomeTextBlock" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
+            <!-- Buttons Section -->
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button Content="Contract Information" Width="150" Margin="10" Click="RegisterContract_Click"/>
+                <Button Content="View Room List" Width="150" Margin="10" Click="RoomStudent_Click"/>
+                <Button Content="Payment Information" Width="150" Margin="10" Click="Payment_Click"/>
+                <Button x:Name="btnShowProfile" Content="Show Profile" Width="150" Margin="10" Click="btnShowProfile_Click"/>
+            </StackPanel>
+        </StackPanel>
+
+        <Button x:Name="btnLogout" Content="Logout" Width="72" Height="30" Margin="0,322,0,0" Click="btnLogout_Click" Background="red" HorizontalAlignment="Center" VerticalAlignment="Top"/>
     </Grid>
 </Window>

@@ -1,0 +1,21 @@
+﻿<Window x:Class="StudentManagement.ContractWindowForStudent"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Contracts" Height="450" Width="800">
+    <Grid>
+        <TextBlock Text="Contracts" FontSize="24" FontWeight="Bold" Margin="10"/>
+        <DataGrid x:Name="ContractsDataGrid" AutoGenerateColumns="False" Margin="10,40,10,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Contract ID" Binding="{Binding MaHopDong}"/>
+                <DataGridTextColumn Header="Student ID" Binding="{Binding MaSinhVien}"/>
+                <!-- Thêm mã sinh viên -->
+                <DataGridTextColumn Header="Student Name" Binding="{Binding TenSinhVien}"/>
+                <DataGridTextColumn Header="Phone Number" Binding="{Binding SoDienThoai}"/>
+                <DataGridTextColumn Header="Room Number" Binding="{Binding SoPhong}"/>
+                <DataGridTextColumn Header="Start Date" Binding="{Binding NgayBatDau}"/>
+                <DataGridTextColumn Header="End Date" Binding="{Binding NgayKetThuc}"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding TrangThai}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

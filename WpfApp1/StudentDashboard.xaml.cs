@@ -1,13 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
-using StudentManagement.Payment;
-using StudentManagement;
-using System;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+﻿using StudentManagement.Payment;
 using StudentManagement.Rooms;
+using System.Windows;
 
 namespace StudentManagement
 {
@@ -16,11 +9,17 @@ namespace StudentManagement
         public StudentDashboard()
         {
             InitializeComponent();
+            LoadWelcomeMessage();
+        }
+
+        private void LoadWelcomeMessage()
+        {
+            WelcomeTextBlock.Text = $"Xin chào, {CurrentUser.Fullname}"; // Assuming CurrentUser has Fullname property
         }
 
         private void RegisterContract_Click(object sender, RoutedEventArgs e)
         {
-            RegisterContractWindow rc = new RegisterContractWindow();
+            ContractWindowForStudent rc = new ContractWindowForStudent();
             rc.Show();
         }
 
@@ -29,9 +28,10 @@ namespace StudentManagement
             RoomWithStudent roomWithStudent = new RoomWithStudent();
             roomWithStudent.Show();
         }
+
         private void Payment_Click(object sender, RoutedEventArgs e)
         {
-            PaymentWindow pw = new PaymentWindow();
+            PaymentForStudent pw = new PaymentForStudent();
             pw.Show();
         }
 
@@ -41,8 +41,14 @@ namespace StudentManagement
             Login loginWindow = new Login();
             loginWindow.Show();
 
-            // Close the MainWindow
+            // Close the current window
             this.Close();
+        }
+
+        private void btnShowProfile_Click(object sender, RoutedEventArgs e)
+        {
+            UserProfile pw = new UserProfile();
+            pw.Show();
         }
     }
 }

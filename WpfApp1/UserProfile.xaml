@@ -1,0 +1,33 @@
+﻿<Window x:Class="StudentManagement.UserProfile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="User Profile" Height="450" Width="400">
+    <StackPanel Margin="20">
+        <TextBlock Text="User Profile" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <TextBlock Text="SinhVienID:" FontWeight="Bold"/>
+        <TextBlock x:Name="SinhVienIDTextBlock" Margin="0,0,0,20"/>
+
+        <TextBlock Text="Full Name:" FontWeight="Bold"/>
+        <TextBlock x:Name="FullnameTextBlock" Margin="0,0,0,10"/>
+
+        <TextBlock Text="Phone Number:" FontWeight="Bold"/>
+        <TextBlock x:Name="PhoneNumberTextBlock" Margin="0,0,0,10"/>
+
+        <TextBlock Text="Gender:" FontWeight="Bold"/>
+        <TextBlock x:Name="GenderTextBlock" Margin="0,0,0,10"/>
+
+        <TextBlock Text="Date of Birth:" FontWeight="Bold"/>
+        <TextBlock x:Name="DateOfBirthTextBlock" Margin="0,0,0,20"/>
+
+        <TextBlock Text="Username:" FontWeight="Bold"/>
+        <TextBox x:Name="UsernameTextBox" Margin="0,0,0,10"/>
+
+        <TextBlock Text="Password:" FontWeight="Bold"/>
+        <PasswordBox x:Name="PasswordBox" Margin="0,0,0,20"/>
+
+        
+
+        <Button Content="Update" Click="UpdateButton_Click" Width="100"/>
+    </StackPanel>
+</Window>

@@ -5,6 +5,7 @@
              StartupUri="Login.xaml">
     <!-- Changed this line -->
     <Application.Resources>
-
+        
     </Application.Resources>
+
 </Application>

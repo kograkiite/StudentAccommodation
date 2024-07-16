@@ -1,0 +1,20 @@
+﻿<Window x:Class="StudentManagement.PaymentForStudent"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Thông Tin Thu Tiền" Height="450" Width="800">
+    <Grid>
+        <TextBlock Text="Thông Tin Thu Tiền" FontSize="24" FontWeight="Bold" Margin="10"/>
+        <DataGrid x:Name="ThuTienDataGrid" AutoGenerateColumns="False" Margin="10,40,10,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Mã Thu Tiền" Binding="{Binding MaThuTien}"/>
+                <DataGridTextColumn Header="Mã Sinh Viên" Binding="{Binding MaSinhVien}"/>
+                <DataGridTextColumn Header="Tên Sinh Viên" Binding="{Binding TenSinhVien}"/>
+                <DataGridTextColumn Header="Số Điện Thoại" Binding="{Binding SoDienThoai}"/>
+                <DataGridTextColumn Header="Số Phòng" Binding="{Binding SoPhong}"/>
+                <DataGridTextColumn Header="Giá Thuê" Binding="{Binding GiaThue}"/>
+                <DataGridTextColumn Header="Trạng Thái" Binding="{Binding TrangThai}"/>
+                <DataGridTextColumn Header="Mã Hợp Đồng" Binding="{Binding MaHopDong}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
