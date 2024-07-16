@@ -1,10 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
-using StudentManagement.Payment;
 using StudentManagement;
-using System;
+using StudentManagement.Payment;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,11 +10,13 @@ namespace WpfApp1
 {
     public partial class MainWindow : Window
     {
+        private User currentUser;
         public ObservableCollection<SinhVien> SinhVienList { get; set; }
 
-        public MainWindow()
+        public MainWindow(User user)
         {
             InitializeComponent();
+            currentUser = user;
             SinhVienList = new ObservableCollection<SinhVien>();
             BangSinhVien.ItemsSource = SinhVienList;
 
@@ -195,6 +195,24 @@ namespace WpfApp1
 
                 BangSinhVien.ItemsSource = filteredList;
             }
+        }
+        private void RefreshStudentDataGrid()
+        {
+            SinhVienList.Clear(); // Xóa danh sách hiện tại
+
+            // Tải lại dữ liệu sinh viên từ cơ sở dữ liệu
+            LoadDataFromDatabase();
+
+            // Cập nhật lại ItemsSource của DataGrid
+            BangSinhVien.ItemsSource = SinhVienList;
+        }
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            RoomRequestWindow roomRequestWindow = new RoomRequestWindow(currentUser);
+            roomRequestWindow.RoomRequestsUpdated += RefreshStudentDataGrid;
+            roomRequestWindow.ShowDialog();
         }
     }
 

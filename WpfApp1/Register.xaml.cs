@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace StudentManagement
@@ -10,7 +10,7 @@ namespace StudentManagement
         {
             InitializeComponent();
         }
-
+        public event Action<User> UserRegistered;
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             string username = Username.Text.Trim();
@@ -27,15 +27,54 @@ namespace StudentManagement
                 return;
             }
 
+            if (!ValidateSinhVienID(sinhVienID))
+            {
+                MessageBox.Show("MaSinhVien is not in the correct format. Please use format SEXXXXXX where X is a digit from 1 to 9.");
+                return;
+            }
+
+            if (!ValidatePhoneNumber(phoneNumber))
+            {
+                MessageBox.Show("Invalid phone number. Please enter a positive number.");
+                return;
+            }
+
             if (RegisterStudentAndUser(username, password, sinhVienID, fullname, phoneNumber, gender))
             {
                 MessageBox.Show("Registration successful!");
+
+                // Notify the Login window of the new user registration
+                UserRegistered?.Invoke(new User
+                {
+                    Username = username,
+                    PasswordHash = HashPassword(password),
+                    Role = "student",
+                    Fullname = fullname,
+                    PhoneNumber = phoneNumber,
+                    sex = gender,
+                    DateOfBirth = DateOfBirth.SelectedDate.Value,
+                    SinhVienID = sinhVienID
+                });
+
                 this.Close();
             }
             else
             {
                 MessageBox.Show("Registration failed. Please try again.");
             }
+        }
+
+        private bool ValidateSinhVienID(string sinhVienID)
+        {
+            // Check if SinhVienID matches the format "SEXxxxxxx"
+            Regex regex = new Regex(@"^SE[0-9]{6}$");
+            return regex.IsMatch(sinhVienID);
+        }
+
+        private bool ValidatePhoneNumber(string phoneNumber)
+        {
+            // Check if PhoneNumber contains only positive digits
+            return phoneNumber.All(char.IsDigit) && !phoneNumber.StartsWith("-");
         }
 
         private bool RegisterStudentAndUser(string username, string password, string sinhVienID, string fullname, string phoneNumber, string gender)

@@ -1,0 +1,17 @@
+﻿<Window x:Class="StudentManagement.RegisterRoomWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentManagement"
+        mc:Ignorable="d"
+        Title="RegisterRoomWindow" Height="450" Width="407">
+    <Grid>
+        <Label Content="Register Room" HorizontalAlignment="Center" Margin="0,33,0,0" VerticalAlignment="Top" FontSize="48"/>
+        <Label Content="Select Room" HorizontalAlignment="Left" Margin="44,112,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <ComboBox x:Name="cbRoom" HorizontalAlignment="Center" VerticalAlignment="Center" Width="197" Height="86" FontSize="48"/>
+        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Left" Margin="44,322,0,0" VerticalAlignment="Top" Height="56" Width="139" Background="#FF002AFF" Foreground="White" Click="btnRegister_Click"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="224,322,0,0" VerticalAlignment="Top" Height="56" Width="139" Click="btnCancel_Click"/>
+
+    </Grid>
+</Window>

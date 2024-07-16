@@ -1,6 +1,4 @@
 ﻿using ClassLibrary1.Models;
-using System;
-using System.Linq;
 using System.Windows;
 
 namespace PE

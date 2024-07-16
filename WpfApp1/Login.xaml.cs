@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Data.SqlClient;
 using System.Windows;
-using Microsoft.Data.SqlClient;
 using WpfApp1;
 
 namespace StudentManagement
@@ -83,7 +81,7 @@ namespace StudentManagement
                 CurrentUser.DateOfBirth = user.DateOfBirth;
                 CurrentUser.SinhVienID = user.SinhVienID; // Load SinhVienID
 
-                OpenAppropriateWindow(user.Role);
+                OpenAppropriateWindow(user);
                 this.Close();
             }
             else
@@ -98,16 +96,16 @@ namespace StudentManagement
             return password; // Placeholder; replace with actual hashing
         }
 
-        private void OpenAppropriateWindow(string role)
+        private void OpenAppropriateWindow(User user)
         {
-            if (role == "student")
+            if (user.Role == "student")
             {
-                StudentDashboard sd = new StudentDashboard();
+                StudentDashboard sd = new StudentDashboard(user);
                 sd.Show();
             }
-            else if (role == "admin")
+            else if (user.Role == "admin")
             {
-                MainWindow mainWindow = new MainWindow();
+                MainWindow mainWindow = new MainWindow(user);
                 mainWindow.Show();
             }
         }
@@ -125,8 +123,15 @@ namespace StudentManagement
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             Register registerWindow = new Register();
+            registerWindow.UserRegistered += OnUserRegistered; // Subscribe to the event
             registerWindow.Show();
         }
+
+        private void OnUserRegistered(User newUser)
+        {
+            userList.Add(newUser); // Update the user list with the new user
+        }
+
     }
 
     public class User

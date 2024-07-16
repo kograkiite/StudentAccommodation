@@ -1,20 +1,19 @@
-﻿using StudentManagement.Payment;
-using StudentManagement.Rooms;
+﻿using StudentManagement.Rooms;
 using System.Windows;
 
 namespace StudentManagement
 {
     public partial class StudentDashboard : Window
     {
-        public StudentDashboard()
+        private User currentUser;
+        private string Fullname;
+
+        public StudentDashboard(User user)
         {
             InitializeComponent();
-            LoadWelcomeMessage();
-        }
-
-        private void LoadWelcomeMessage()
-        {
-            WelcomeTextBlock.Text = $"Xin chào, {CurrentUser.Fullname}"; // Assuming CurrentUser has Fullname property
+            currentUser = user;
+            Fullname = user.Fullname;
+            Welcome.Text = "Xin chào, " + Fullname;
         }
 
         private void RegisterContract_Click(object sender, RoutedEventArgs e)
@@ -49,6 +48,18 @@ namespace StudentManagement
         {
             UserProfile pw = new UserProfile();
             pw.Show();
+        }
+
+        private void btnRegisterRoom_Click(object sender, RoutedEventArgs e)
+        {
+            RegisterRoomWindow registerRoomWindow = new RegisterRoomWindow(currentUser);
+            registerRoomWindow.Show();
+        }
+
+        private void btnViewRoomRequest_Click(object sender, RoutedEventArgs e)
+        {
+            RoomRequestWindow roomRequestWindow = new RoomRequestWindow(currentUser);
+            roomRequestWindow.Show();
         }
     }
 }

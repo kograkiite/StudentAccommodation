@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Data.SqlClient;
 
 namespace StudentManagement.Payment
 {

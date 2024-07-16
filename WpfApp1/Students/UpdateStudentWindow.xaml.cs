@@ -1,6 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using StudentManagement;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 

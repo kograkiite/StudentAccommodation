@@ -1,0 +1,29 @@
+﻿<Window x:Class="StudentManagement.RoomRequestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentManagement"
+        mc:Ignorable="d"
+        Title="RoomRequestWindow" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="dgRoomRequests" AutoGenerateColumns="False" Margin="10,108,10,73"
+                  CanUserAddRows="False" CanUserDeleteRows="True" 
+                  SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="RequestID" Binding="{Binding RequestID}" Width="80"/>
+                <DataGridTextColumn Header="Mã Sinh viên" Binding="{Binding MaSinhVien}" Width="*"/>
+                <DataGridTextColumn Header="Tên Sinh viên" Binding="{Binding TenSinhVien}" Width="*"/>
+                <DataGridTextColumn Header="Số Điện Thoại" Binding="{Binding SoDienThoai}" Width="*"/>
+                <DataGridTextColumn Header="Số phòng" Binding="{Binding SoPhong}" Width="70"/>
+                <DataGridTextColumn Header="Ngày Yêu Cầu" Binding="{Binding NgayYeuCau}" Width="*"/>
+                <DataGridTextColumn Header="Trạng Thái" Binding="{Binding TrangThaiYeuCau}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button x:Name="btnCancelRequest" Content="Cancel Request" Click="btnCancelRequest_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="682,0,0,10" Height="46"/>
+        <Button x:Name="btnAcceptRequest" Content="Accept Request" Click="btnAcceptRequest_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="575,0,0,10" Height="46" Visibility="Collapsed"/>
+        <Button x:Name="btnDeclineRequest" Content="Decline Request" Click="btnDeclineRequest_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="678,0,0,10" Height="46" Visibility="Collapsed"/>
+        <Label Content="Room Requests" HorizontalAlignment="Center" Margin="0,17,0,0" VerticalAlignment="Top" FontSize="48"/>
+    </Grid>
+</Window>

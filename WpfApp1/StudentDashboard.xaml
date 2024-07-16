@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Student Dashboard" Height="450" Width="800">
     <Grid>
+        <TextBlock x:Name="Welcome" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,44,0,0" Width="364" VerticalAlignment="Top"/>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <!-- Centered Welcome Message -->
-            <TextBlock x:Name="WelcomeTextBlock" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
 
             <!-- Buttons Section -->
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button x:Name="btnRegisterRoom" Content="Register Room" Width="150" Margin="10" Click="btnRegisterRoom_Click"/>
+                <Button x:Name="btnViewRoomRequest" Content="View Room Request" Width="150" Margin="10" Click="btnViewRoomRequest_Click"/>
                 <Button Content="Contract Information" Width="150" Margin="10" Click="RegisterContract_Click"/>
                 <Button Content="View Room List" Width="150" Margin="10" Click="RoomStudent_Click"/>
                 <Button Content="Payment Information" Width="150" Margin="10" Click="Payment_Click"/>
