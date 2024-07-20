@@ -21,7 +21,7 @@ namespace StudentManagement
         {
             Rooms = new ObservableCollection<string>();
             string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
-            string query = "SELECT SoPhong FROM Phong WHERE TrangThaiPhong = 1"; // Chỉ lấy những phòng có TrangThaiPhong = 1
+            string query = "SELECT SoPhong FROM Phong WHERE TrangThaiPhong = 1";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -70,25 +70,61 @@ namespace StudentManagement
             }
         }
 
+        private bool CheckExistingContract(string maSinhVien, string soPhong)
+        {
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string query = "SELECT NgayKetThuc FROM HopDong WHERE MaSinhVien = @MaSinhVien AND TrangThai = 1";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@MaSinhVien", maSinhVien);
+                command.Parameters.AddWithValue("@SoPhong", soPhong);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        DateTime ngayKetThuc = reader.GetDateTime(0);
+                        reader.Close();
+                        return ngayKetThuc > DateTime.Now;
+                    }
+                    reader.Close();
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi kiểm tra HopDong: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+        }
+
         private void InsertRoomRequest(string maSinhVien, string tenSinhVien, string soDienThoai, string soPhong)
         {
-            // Kiểm tra xem maSinhVien có tồn tại trong bảng SinhVien không
             if (!IsMaSinhVienValid(maSinhVien))
             {
                 MessageBox.Show("Không thể thêm yêu cầu đăng ký phòng. MaSinhVien không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // Kiểm tra xem sinh viên đã có yêu cầu nào chưa
             if (HasExistingRoomRequest(maSinhVien))
             {
                 MessageBox.Show("Sinh viên đã có yêu cầu đăng ký phòng. Chỉ được phép tạo một yêu cầu duy nhất.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
+            if (CheckExistingContract(maSinhVien, soPhong))
+            {
+                MessageBox.Show("Sinh viên đã có hợp đồng cho phòng này và hợp đồng vẫn còn hiệu lực. Không thể đăng ký lại.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string insertQuery = @"INSERT INTO RoomRequests (MaSinhVien, TenSinhVien, SoDienThoai, SoPhong, NgayYeuCau, TrangThaiYeuCau) 
-                           VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @NgayYeuCau, @TrangThaiYeuCau)";
+                                   VALUES (@MaSinhVien, @TenSinhVien, @SoDienThoai, @SoPhong, @NgayYeuCau, @TrangThaiYeuCau)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -97,8 +133,8 @@ namespace StudentManagement
                 command.Parameters.AddWithValue("@TenSinhVien", tenSinhVien);
                 command.Parameters.AddWithValue("@SoDienThoai", soDienThoai);
                 command.Parameters.AddWithValue("@SoPhong", soPhong);
-                command.Parameters.AddWithValue("@NgayYeuCau", DateTime.Now); // Ngày yêu cầu là ngày hiện tại
-                command.Parameters.AddWithValue("@TrangThaiYeuCau", "Pending"); // Trạng thái yêu cầu mặc định là Pending
+                command.Parameters.AddWithValue("@NgayYeuCau", DateTime.Now);
+                command.Parameters.AddWithValue("@TrangThaiYeuCau", "Pending");
 
                 try
                 {
@@ -122,7 +158,6 @@ namespace StudentManagement
 
         private bool IsMaSinhVienValid(string maSinhVien)
         {
-            // Kiểm tra xem maSinhVien có tồn tại trong bảng SinhVien không
             string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
             string query = "SELECT COUNT(*) FROM SinhVien WHERE id = @MaSinhVien";
 
@@ -152,12 +187,11 @@ namespace StudentManagement
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            string maSinhVien = currentUser.SinhVienID; // Lấy SinhVienID từ currentUser
-            string tenSinhVien = currentUser.Fullname; // Lấy Tên sinh viên từ currentUser
-            string soDienThoai = currentUser.PhoneNumber; // Lấy Số điện thoại từ currentUser
-            string soPhong = cbRoom.SelectedItem as string; // Lấy Số phòng từ combobox
+            string maSinhVien = currentUser.SinhVienID;
+            string tenSinhVien = currentUser.Fullname;
+            string soDienThoai = currentUser.PhoneNumber;
+            string soPhong = cbRoom.SelectedItem as string;
 
-            // Gọi phương thức để thêm yêu cầu đăng ký phòng vào CSDL
             InsertRoomRequest(maSinhVien, tenSinhVien, soDienThoai, soPhong);
         }
     }

@@ -96,6 +96,13 @@ namespace WpfApp1
                 return;
             }
 
+            // Kiểm tra hợp đồng của sinh viên
+            if (HasValidContract(studentId))
+            {
+                MessageBox.Show("Sinh viên đang có hợp đồng còn hạn. Không thể cập nhật.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             // Retrieve current room of the student
             string currentRoom = GetCurrentRoom(txtId.Text);
 
@@ -153,6 +160,31 @@ namespace WpfApp1
                 }
             }
         }
+
+        private bool HasValidContract(string studentId)
+        {
+            string connectionString = "Data Source=localhost;Initial Catalog=StudentManagement;Integrated Security=True;Trust Server Certificate=True";
+            string query = "SELECT COUNT(*) FROM HopDong WHERE MaSinhVien = @MaSinhVien AND TrangThai = 1";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@MaSinhVien", studentId);
+
+                try
+                {
+                    connection.Open();
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi kiểm tra hợp đồng: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+        }
+
 
         // Method to retrieve current room of the student
         private string GetCurrentRoom(string studentId)

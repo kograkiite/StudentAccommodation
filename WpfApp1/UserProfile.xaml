@@ -1,7 +1,7 @@
 ﻿<Window x:Class="StudentManagement.UserProfile"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="User Profile" Height="450" Width="400">
+        Title="User Profile" Height="469" Width="400">
     <StackPanel Margin="20">
         <TextBlock Text="User Profile" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
 
